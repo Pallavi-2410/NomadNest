@@ -16,7 +16,7 @@ const firebaseConfig = {
     storageBucket: "nomad-nest-firebase.firebasestorage.app",
     messagingSenderId: "72159673447",
     appId: "1:72159673447:web:84b58d614422d0e073e8c2",
-    databaseURL: "https://nomad-nest-firebase-default-rtdb.firebaseio.com/"
+    databaseURL: "https://cors-anywhere.herokuapp.com/https://nomad-nest-firebase-default-rtdb.firebaseio.com/"
 };
 
 // Initialize Firebase
@@ -27,3 +27,5 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 export { auth, provider, db, storage };
+
+console.log(db, "db", storage, "storage")

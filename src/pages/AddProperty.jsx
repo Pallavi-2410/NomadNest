@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { db, storage } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { Box, Button, Input, Textarea, VStack, Heading } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,19 +13,23 @@ const AddProperty = () => {
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
+    // Handle image selection
     const handleImageChange = (e) => {
         if (e.target.files[0]) {
             setImage(e.target.files[0]);
         }
     };
 
+    // Handle form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+
         try {
             let imageUrl = "";
             if (image) {
-                const imageRef = ref(storage, `property-images/${image.name}`);
+                const imageRef = ref(storage, `Downloads/${image.name}`);
+                console.log(imageRef, "====")
                 await uploadBytes(imageRef, image);
                 imageUrl = await getDownloadURL(imageRef);
             }
@@ -69,7 +73,7 @@ const AddProperty = () => {
                     onChange={(e) => setPrice(e.target.value)}
                     required
                 />
-                <Input type="file" accept="image/*" onChange={handleImageChange} />
+                <Input type="file" accept="image/*" onChange={handleImageChange} required />
                 <Button type="submit" colorScheme="blue" isLoading={loading}>Submit</Button>
             </VStack>
         </Box>
