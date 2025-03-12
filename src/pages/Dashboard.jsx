@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { Box, Button, Text, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Text, Flex, Heading, Image, SimpleGrid } from "@chakra-ui/react";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -50,10 +50,15 @@ const Dashboard = () => {
                     List a Property
                 </Button>
             </Flex>
-
+        
             {properties.length > 0 ? (
-                properties.map((property) => (
-                    <Box key={property.id} p={4} borderWidth="1px" borderRadius="md" mb={4}>
+                <SimpleGrid columns={[1, 2, 3]} gap={5} height="600px" >
+                {properties.map((property) => (
+                    <Box key={property.id} p={4} borderWidth="1px" borderRadius="md" >
+                        <Image src={property.imageUrl}
+                            alt={property.title}
+                            boxSize="200px"
+                            borderRadius="md" />
                         <Heading size="md">{property.title}</Heading>
                         <Text>{property.description}</Text>
                         <Text>Price: ${property.price}</Text>
@@ -61,11 +66,13 @@ const Dashboard = () => {
                             <Button colorScheme="blue" mt={2}>View Details</Button>
                         </Link>
                     </Box>
-                ))
+                ))}
+                </SimpleGrid>
             ) : (
                 <Text>No properties found.</Text>
             )}
         </Box>
+        
     );
 };
 
