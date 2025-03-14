@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Box, Button, Flex, Avatar, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Image, Heading } from "@chakra-ui/react";
 import { handleGoogleSignIn, handleSignOut } from "../firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
+import NomadNestLogo from "../assets/Logo/NomadLogo.png"
 
 const Navbar = () => {
     const [user, setUser] = useState("");
@@ -16,28 +17,25 @@ const Navbar = () => {
     }, []);
 
     return (
-        <Box bg="blue.500" p={4} color="white">
+        <Box p={2}>
             <Flex justify="space-between" align="center">
-                <Link to="/">🏠 Home</Link>
-                <Flex gap={4} align="center">
-                    <Link to="/dashboard">
-                        <Button colorScheme="teal">Dashboard</Button>
-                    </Link>
+                <Link to="/dashboard"><Image width="120px" marginLeft="50px" p={2} src={NomadNestLogo} alt="NomadNestLogo"/></Link>
 
+                <Flex gap={1} align="center">                  
                     {!user ? (
-                        <Button onClick={() => handleGoogleSignIn(navigate)} colorScheme="yellow">
+                        <Button onClick={() => handleGoogleSignIn(navigate)}>
                             Sign in with Google
                         </Button>
                     ) : (
                         <>
-                            {/* <Avatar src={user?.photoURL || ""} size="sm" /> */}
-                            <Text>{user?.displayName}</Text>
-                            <Button onClick={handleSignOut} colorScheme="red">
+                            <Link to="/add-property">
+                                <Button bg="transparent" color="black">Add Property</Button>
+                                </Link>
+                            <Text fontSize={"sm"}>{user?.displayName}</Text>
+                            <Button onClick={handleSignOut} bg="transparent" color="black">
                                 Sign Out
                             </Button>
-                                <Link to="/add-property">
-                                    <Button colorScheme="blue">Add Property</Button>
-                                </Link>
+                                
                         </>
                     )}
                 </Flex>
