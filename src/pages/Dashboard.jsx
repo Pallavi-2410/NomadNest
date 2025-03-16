@@ -139,61 +139,86 @@ const Dashboard = () => {
 
         {/* Second Nav */}
             <Box>
-                <Flex gap={10} color="gray.600" fontWeight="bold" flexDirection="row" m="20px 0px 20px 40px">
+                <Flex gap={10} color="gray.500"  flexDirection="row" m="20px 0px 20px 40px"
+                height={"40px"} justifyContent={"center"}>
                     <Link to="/rooms">
-                        <Flex direction="column" align="center" justify="center">
-                            <LuBedDouble fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <LuBedDouble size={"20px"} />
                             <Text fontSize="xs">Rooms</Text>
                         </Flex>
                     </Link>
                     <Link to="/lakefront">
-                        <Flex direction="column" align="center" justify="center">
-                            <FaWater fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <FaWater size={"20px"} />
                             <Text fontSize="xs">Lakefront</Text>
                         </Flex>
                     </Link>
                     <Link to="/amazingview">
-                        <Flex direction="column" align="center" justify="center">
-                            <GiWindow fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <GiWindow size={"20px"} />
                             <Text fontSize="xs">Amazing View</Text>
                         </Flex>
                     </Link>
                     <Link to="/beachfront">
-                        <Flex direction="column" align="center" justify="center">
-                            <TbBeach fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <TbBeach size={"20px"} />
                             <Text fontSize="xs">Beachfront</Text>
                         </Flex>
                     </Link>
                     <Link to="/treehouses">
-                        <Flex direction="column" align="center" justify="center">
-                            <GiTreehouse fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <GiTreehouse size={"20px"} />
                             <Text fontSize="xs">Treehouses</Text>
                         </Flex>
                     </Link>
                     <Link to="/luxe">
-                        <Flex direction="column" align="center" justify="center">
-                            <MdOutlineEmojiFoodBeverage fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <MdOutlineEmojiFoodBeverage size={"20px"} />
                             <Text fontSize="xs">Luxe</Text>
                         </Flex>
                     </Link>
                     <Link to="/poolSideProperty">
-                        <Flex direction="column" align="center" justify="center">
-                            <FaSwimmingPool fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <FaSwimmingPool size={"20px"} />
                             <Text fontSize="xs">Amazing pools</Text>
                         </Flex>
                     </Link>
                     <Link to="/farms">
-                        <Flex direction="column" align="center" justify="center">
-                            <PiFarm fontSize="24px" />
+                        <Flex direction="column" align="center" justify="center" _hover={{
+                            color: "black",
+                            borderBottom: "2px solid black"
+                        }}>
+                            <PiFarm size={"20px"} />
                             <Text fontSize="xs">Farms</Text>
                         </Flex>
                     </Link>
                     {/* <label For="">Sort by Price</label> */}
-                    <Select width="200px" onChange={handleSortChange} value={sortOrder} placeholder="Sort by Price">
+                    <select style={{ border: "1px solid gray", width:"200px", borderRadius:"5px", padding:"5px", fontSize:"small"}}  onChange={handleSortChange} value={sortOrder} placeholder="Sort by Price">
                         <option value="">Sort by Price</option>
                         <option value="low-to-high"> <GoSortAsc /> Low to High</option>
                         <option value="high-to-low"> <GoSortDesc />High to Low</option>
-                    </Select>                    
+                    </select>                    
                 </Flex>
             </Box>
 
