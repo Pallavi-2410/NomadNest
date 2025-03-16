@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image } from "@chakra-ui/react";
+import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image, Select} from "@chakra-ui/react";
 import { LuSearch, LuBedDouble } from "react-icons/lu";
 import { FaSwimmingPool, FaWater } from "react-icons/fa";
 import { GiWindow, GiTreehouse } from "react-icons/gi";
 import { TbBeach } from "react-icons/tb";
 import { MdOutlineEmojiFoodBeverage } from "react-icons/md";
 import { PiFarm } from "react-icons/pi";
+import { GoSortAsc, GoSortDesc } from "react-icons/go";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -17,6 +18,7 @@ const Dashboard = () => {
     const [selectedDate, setSelectedDate] = useState("");
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
+    const [sortOrder, setSortOrder] = useState("")
 
     const navigate = useNavigate();
 
@@ -44,6 +46,18 @@ const Dashboard = () => {
         fetchProperties();
     }, []);
 
+    const handleSortChange = (event) => {
+        const order = event.target.value;
+        setSortOrder(order);
+
+        const sortedProperties = [...properties].sort((a,b) => {
+            if (order === "low-to-high") return a.price - b.price;
+            if (order === "high-to-low") return b.price - a.price;
+            return 0;
+        });
+        setProperties(sortedProperties);
+    };
+
     if (!user) {
         return (
             <Box textAlign="center" mt={10}>
@@ -69,6 +83,7 @@ const Dashboard = () => {
                     <Text fontSize={"sm"}>Where</Text>
                     <Input
                         border={"none"}
+                        _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                         placeholder="Search destination"
                         value={destination}
                         onChange={(e) => setDestination(e.target.value)}
@@ -79,6 +94,7 @@ const Dashboard = () => {
                     <Text fontSize={"sm"}>Dates</Text>
                     <Input
                         border={"none"}
+                        _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                         type="date"
                         value={selectedDate}
                         onChange={(e) => setSelectedDate(e.target.value)}
@@ -91,6 +107,7 @@ const Dashboard = () => {
                             <Text fontSize="smaller">Adults</Text>
                             <Input
                                 border={"none"}
+                                _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                                 type="number"
                                 value={adults}
                                 min="1"
@@ -101,6 +118,7 @@ const Dashboard = () => {
                             <Text fontSize="smaller">Children</Text>
                             <Input
                                 border={"none"}
+                                _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                                 type="number"
                                 value={children}
                                 min="0"
@@ -115,23 +133,70 @@ const Dashboard = () => {
                 </Box>                
             </Flex>
 
-            <Box as="hr" mb={4} border="1px solid gray.300" />
+            <Box as="hr" mb={8} border="1px solid gray.300" />
 
 
 
         {/* Second Nav */}
-                <Box>
-                <Flex gap={10} color={"gray.600"} fontWeight={"bold"} flexDirection={"columns"} m={[5, 0, 5, 10]}>
-                    <Link to="/rooms" > <Flex align={"center"} gap={1}><LuBedDouble size={"20px"} /><Text fontSize={"xs"}>Rooms</Text></Flex> </Link>
-                    <Link to="/lakefront"> <Flex align={"center"} gap={1}><FaWater size={"20px"} /> <Text fontSize={"xs"}>Lakefront</Text></Flex> </Link>
-                    <Link to="/amazingview"> <Flex align={"center"} gap={1}><GiWindow size={"20px"} /> <Text fontSize={"xs"}>Amazing View</Text></Flex> </Link>
-                    <Link to="/beachfront"> <Flex align={"center"} gap={1}><TbBeach size={"20px"} /> <Text fontSize={"xs"}>Beachfront</Text></Flex> </Link>
-                    <Link to="/treehouses"> <Flex align={"center"} gap={1}><GiTreehouse size={"20px"} /> <Text fontSize={"xs"}>Treehouses</Text></Flex> </Link>
-                    <Link to="/luxe"> <Flex align={"center"} gap={1}><MdOutlineEmojiFoodBeverage size={"20px"} /> <Text fontSize={"xs"}>Luxe</Text></Flex> </Link>
-                    <Link to="/poolSideProperty"> <Flex align={"center"} gap={1}><FaSwimmingPool size={"20px"} /> <Text fontSize={"xs"}>Amazing pools</Text></Flex> </Link>
-                    <Link to="/farms"> <Flex align={"center"} gap={1}><PiFarm size={"20px"} /> <Text fontSize={"xs"}>Farms</Text></Flex> </Link>
-                    </Flex>
-                </Box>
+            <Box>
+                <Flex gap={10} color="gray.600" fontWeight="bold" flexDirection="row" m="20px 0px 20px 40px">
+                    <Link to="/rooms">
+                        <Flex direction="column" align="center" justify="center">
+                            <LuBedDouble fontSize="24px" />
+                            <Text fontSize="xs">Rooms</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/lakefront">
+                        <Flex direction="column" align="center" justify="center">
+                            <FaWater fontSize="24px" />
+                            <Text fontSize="xs">Lakefront</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/amazingview">
+                        <Flex direction="column" align="center" justify="center">
+                            <GiWindow fontSize="24px" />
+                            <Text fontSize="xs">Amazing View</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/beachfront">
+                        <Flex direction="column" align="center" justify="center">
+                            <TbBeach fontSize="24px" />
+                            <Text fontSize="xs">Beachfront</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/treehouses">
+                        <Flex direction="column" align="center" justify="center">
+                            <GiTreehouse fontSize="24px" />
+                            <Text fontSize="xs">Treehouses</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/luxe">
+                        <Flex direction="column" align="center" justify="center">
+                            <MdOutlineEmojiFoodBeverage fontSize="24px" />
+                            <Text fontSize="xs">Luxe</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/poolSideProperty">
+                        <Flex direction="column" align="center" justify="center">
+                            <FaSwimmingPool fontSize="24px" />
+                            <Text fontSize="xs">Amazing pools</Text>
+                        </Flex>
+                    </Link>
+                    <Link to="/farms">
+                        <Flex direction="column" align="center" justify="center">
+                            <PiFarm fontSize="24px" />
+                            <Text fontSize="xs">Farms</Text>
+                        </Flex>
+                    </Link>
+                    {/* <label For="">Sort by Price</label> */}
+                    <Select width="200px" onChange={handleSortChange} value={sortOrder} placeholder="Sort by Price">
+                        <option value="">Sort by Price</option>
+                        <option value="low-to-high"> <GoSortAsc /> Low to High</option>
+                        <option value="high-to-low"> <GoSortDesc />High to Low</option>
+                    </Select>                    
+                </Flex>
+            </Box>
+
         
             {properties.length > 0 ? (
                 <SimpleGrid columns={[1, 2, 3]} gap={5} height="600px" >

@@ -34,7 +34,7 @@ const PropertyDetails = () => {
 
   return (
     <Box p={5} maxW="600px" mx="auto">
-      <Image src={property.imageUrl}                                  alt={property.title}                                  boxSize="200px"                              borderRadius="md" />
+      <Image src={property.imageUrl}  alt={property.title} boxSize="200px" borderRadius="md" />
       <Heading size="lg" mb={4}>{property.title}</Heading>
       <Text fontSize="lg">{property.description}</Text>
       <Text fontSize="xl" fontWeight="bold" mt={2}>Price: ${property.price}</Text>
