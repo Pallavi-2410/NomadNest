@@ -3,7 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
 import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image } from "@chakra-ui/react";
-import { LuChevronDown, LuFileSearch2, LuSearch } from "react-icons/lu";
+import { LuSearch, LuBedDouble } from "react-icons/lu";
+import { FaSwimmingPool, FaWater } from "react-icons/fa";
+import { GiWindow, GiTreehouse } from "react-icons/gi";
+import { TbBeach } from "react-icons/tb";
+import { MdOutlineEmojiFoodBeverage } from "react-icons/md";
+import { PiFarm } from "react-icons/pi";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -59,7 +64,7 @@ const Dashboard = () => {
 
             {/* SearchBar */}
 
-            <Flex gap={15} mb={8} p={3} height="80px" marginX={100} borderRadius="60px" border="1px solid" borderColor="gray.100" boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+            <Flex gap={15} mb={6} p={3} height="80px" marginX={100} borderRadius="60px" border="1px solid" borderColor="gray.100" boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px;">
                 <Box marginTop={0.5} flex="1" marginLeft={4}>
                     <Text fontSize={"sm"}>Where</Text>
                     <Input
@@ -109,6 +114,24 @@ const Dashboard = () => {
                     <Button bg="Red" borderRadius="50px" ><LuSearch/>Search</Button>
                 </Box>                
             </Flex>
+
+            <Box as="hr" mb={4} border="1px solid gray.300" />
+
+
+
+        {/* Second Nav */}
+                <Box>
+                <Flex gap={10} color={"gray.600"} fontWeight={"bold"} flexDirection={"columns"} m={[5, 0, 5, 10]}>
+                    <Link to="/rooms" > <Flex align={"center"} gap={1}><LuBedDouble size={"20px"} /><Text fontSize={"xs"}>Rooms</Text></Flex> </Link>
+                    <Link to="/lakefront"> <Flex align={"center"} gap={1}><FaWater size={"20px"} /> <Text fontSize={"xs"}>Lakefront</Text></Flex> </Link>
+                    <Link to="/amazingview"> <Flex align={"center"} gap={1}><GiWindow size={"20px"} /> <Text fontSize={"xs"}>Amazing View</Text></Flex> </Link>
+                    <Link to="/beachfront"> <Flex align={"center"} gap={1}><TbBeach size={"20px"} /> <Text fontSize={"xs"}>Beachfront</Text></Flex> </Link>
+                    <Link to="/treehouses"> <Flex align={"center"} gap={1}><GiTreehouse size={"20px"} /> <Text fontSize={"xs"}>Treehouses</Text></Flex> </Link>
+                    <Link to="/luxe"> <Flex align={"center"} gap={1}><MdOutlineEmojiFoodBeverage size={"20px"} /> <Text fontSize={"xs"}>Luxe</Text></Flex> </Link>
+                    <Link to="/poolSideProperty"> <Flex align={"center"} gap={1}><FaSwimmingPool size={"20px"} /> <Text fontSize={"xs"}>Amazing pools</Text></Flex> </Link>
+                    <Link to="/farms"> <Flex align={"center"} gap={1}><PiFarm size={"20px"} /> <Text fontSize={"xs"}>Farms</Text></Flex> </Link>
+                    </Flex>
+                </Box>
         
             {properties.length > 0 ? (
                 <SimpleGrid columns={[1, 2, 3]} gap={5} height="600px" >
