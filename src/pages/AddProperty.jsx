@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
-import { Box, Button, Input, Textarea, VStack, Heading, Image, SimpleGrid, Text, Card, CardBody, NumberInput, NumberInputInput, NumberInputContext, Select } from "@chakra-ui/react";
+import { Box, Button, Input, Textarea, VStack, Heading, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const AddProperty = () => {
@@ -149,8 +149,13 @@ const AddProperty = () => {
                 </Box>
 
                 <Box w="full" mb={2}>
-                    <Text mb={1}>Price Per Night ($)</Text>
+                    <Text mb={1}>Price Per Night (&#8377;)</Text>
                     <Input type="number" min="0" placeholder="Enter price per night" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Description</Text>
+                    <Textarea placeholder="Enter description" value={description} onChange={(e) => setDescription(e.target.value)} required />
                 </Box>
 
                 <Box w="full" mb={2}>

@@ -11,18 +11,19 @@ import AddProperty from "./pages/AddProperty";
 
 function App() {
   return (
-      <Router>
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/property/:id" element={<PropertyDetails />} />
-          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/add-property" element={<AddProperty />} />
+    <Router>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/property/:id" element={<PropertyDetails />} />
-        </Routes>
-      </Router>
+        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
+        <Route path="/add-property" element={<AddProperty />} />
+        <Route path="/property/:id" element={<PropertyDetails />} />
+        <Route path="/category/:category" element={<Dashboard />} />
+      </Routes>
+    </Router>
   );
 }
 
