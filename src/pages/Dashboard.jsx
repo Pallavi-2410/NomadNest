@@ -288,19 +288,21 @@ const Dashboard = () => {
     const [filteredProperties, setFilteredProperties] = useState([]);
 
     const navigate = useNavigate();
-    const { category } = useParams();
+    // const { category } = useParams();
 
-    const filterByCategory = (properties, category) => {
-        if (!category) return properties; // If no category is selected, return all properties
+    // const filterByCategory = (properties, category) => {
+    //     if (!category) return properties; // If no category is selected, return all properties
 
-        return properties.filter(property =>
-            (property.title && property.title.toLowerCase().includes(category.toLowerCase())) ||
-            (property.description && property.description.toLowerCase().includes(category.toLowerCase()))
-        );
-    };
+    //     return properties.filter(property =>
+    //         (property.title && property.title.toLowerCase().includes(category.toLowerCase())) ||
+    //         (property.description && property.description.toLowerCase().includes(category.toLowerCase()))
+    //     );
+    // };
 
-    // Apply filtering
-    const filteredByCategory = filterByCategory(filteredProperties.length > 0 ? filteredProperties : properties, category);
+    // // Apply filtering
+    // const filteredByCategory = filterByCategory(filteredProperties.length > 0 ? filteredProperties : properties, category);
+
+    // console.log("Selected Category:", category);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -338,35 +340,7 @@ const Dashboard = () => {
         setProperties(sortedProperties);
     };
 
-    // const handleSearch = () => {
-    //     console.log("Running search with: ", { destination, selectedDate, adults, children });
-    //     console.log("Property locations: ", properties.map(p => p.location));
-
-
-    //     const selectedDateObj = selectedDate ? new Date(selectedDate) : null;
-
-    //     const searchResults = properties.filter(property => {
-    //         const location = property.location ? property.location.toLowerCase() : ""; 
-    //         const matchesLocation = !destination || location.includes(destination.toLowerCase());
-
-    //         const matchesDate =
-    //             !selectedDateObj ||
-    //             (property.checkIn && property.checkOut &&
-    //                 new Date(property.checkIn) <= selectedDateObj &&
-    //                 new Date(property.checkOut) >= selectedDateObj);
-
-    //         const totalGuests = (adults || 0) + (children || 0);
-    //         const maxGuests = property.maxGuests || Number.MAX_SAFE_INTEGER;
-
-    //         const matchesGuests = totalGuests === 0 || totalGuests <= maxGuests;
-
-    //         return matchesLocation && matchesDate && matchesGuests;
-    //     });
-
-    //     console.log("Filtered Properties: ", searchResults);
-
-    //     setFilteredProperties(searchResults.length > 0 ? searchResults : properties); 
-
+    
     const handleSearch = () => {
         console.log("Running search with: ", { destination, selectedDate, adults, children });
 
