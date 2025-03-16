@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
-import { Box, Button, Input, Textarea, VStack, Heading, Image, SimpleGrid, Text, Card, CardBody } from "@chakra-ui/react";
+import { Box, Button, Input, Textarea, VStack, Heading, Image, SimpleGrid, Text, Card, CardBody, NumberInput, NumberInputInput, NumberInputContext, Select } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const AddProperty = () => {
@@ -12,6 +12,11 @@ const AddProperty = () => {
     const [imageUrl, setImageUrl] = useState("");
     const [loading, setLoading] = useState(false);
     const [properties, setProperties] = useState([]);
+    const [location, setLocation] = useState("");
+    const [checkIn, setCheckIn] = useState("");
+    const [checkOut, setCheckOut] = useState("");
+    const [adults, setAdults] = useState(1);
+    const [children, setChildren] = useState(0);
     const navigate = useNavigate();
 
     console.log(properties, "properties")
@@ -60,6 +65,11 @@ const AddProperty = () => {
                 title,
                 description,
                 price,
+                location,
+                checkIn,
+                checkOut,
+                adults,
+                children,
                 imageUrl: uploadedImageUrl,
                 createdAt: serverTimestamp(),
             });
@@ -84,62 +94,96 @@ const AddProperty = () => {
         fetchProperties();
     }, []);
 
+
+
     return (
-        <Box p={5} maxW="1200px" mx="auto">
-            <Heading size="lg" mb={4}>List a New Property</Heading>
-            <VStack spacing={4} as="form" onSubmit={handleSubmit}>
-                <Input
-                    placeholder="Property Title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    required
-                />
-                <Textarea
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    required
-                />
-                <Input
-                    type="number"
-                    placeholder="Price"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    required
-                />
-                <Input type="file" accept="image/*" required />
-                {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" />}
-                <Button type="submit" colorScheme="blue" isLoading={loading}>Submit</Button>
+        <Box p={5} maxW="80%" mx="auto">
+            <Heading size="lg" mb={6} textAlign="center">List a New Property</Heading>
+            <VStack as="form" onSubmit={handleSubmit} spacing={4} margin={"auto"} p={5} boxShadow="md" borderRadius="md" maxW={"60%"}>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Property Title</Text>
+                    <Input placeholder="Enter property title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Location</Text>
+                    <Input placeholder="Enter location (City, Country)" value={location} onChange={(e) => setLocation(e.target.value)} required />
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Check-in Date</Text>
+                    <Input type="date" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} required />
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Check-out Date</Text>
+                    <Input type="date" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} required />
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Guests</Text>
+                    <Box display="flex" gap={3}>
+                        <Box flex="1">
+                            <Text fontSize="sm" mb={1}>Adults</Text>
+                            <select value={adults} onChange={(e) => setAdults(e.target.value)} required
+                                style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}>
+                                <option value="">Select Adults</option>
+                                {[...Array(10).keys()].map(i => (
+                                    <option key={i + 1} value={i + 1}>{i + 1}</option>
+                                ))}
+                            </select>
+                        </Box>
+
+                        <Box flex="1" mb={2}>
+                            <Text fontSize="sm" mb={1}>Children</Text>
+                            <select value={children} onChange={(e) => setChildren(e.target.value)}
+                                style={{ width: "100%", padding: "8px", borderRadius: "5px", border: "1px solid #ccc" }}>
+                                <option value="">Select Children</option>
+                                {[...Array(10).keys()].map(i => (
+                                    <option key={i} value={i}>{i}</option>
+                                ))}
+                            </select>
+                        </Box>
+                    </Box>
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Price Per Night ($)</Text>
+                    <Input type="number" min="0" placeholder="Enter price per night" value={price} onChange={(e) => setPrice(e.target.value)} required />
+                </Box>
+
+                <Box w="full" mb={2}>
+                    <Text mb={1}>Upload Property Image</Text>
+                    <Input type="file" accept="image/*" required />
+                    {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />}
+                </Box>
+
+                <Button type="submit" color={"white"} bgColor={"#CE1B05"} borderRadius={8} isLoading={loading} w="full">Submit</Button>
             </VStack>
 
-            <Heading size="lg" mt={10} mb={4}>All Properties</Heading>
+            <Heading size="lg" mt={10} mb={4} textAlign="left">All Properties</Heading>
             {Array.isArray(properties) && properties.length > 0 ? (
-                <SimpleGrid columns={[1, 2, 3]} gap={5} height="600px">
+                <SimpleGrid columns={[1, 2]} gap={5}>
                     {properties?.map((property) => (
                         <Box key={property.id} p={4} boxShadow="md" borderRadius="md">
                             {property.imageUrl && (
-                                <Image
-                                    src={property.imageUrl}
-                                    alt={property.title}
-                                    boxSize="200px"
-                                    borderRadius="md"
-                                />
+                                <Image src={property.imageUrl} alt={property.title} boxSize="200px" borderRadius="md" />
                             )}
-                            <Text fontWeight="bold" mt={2}>
-                                {property.title}
-                            </Text>
-                            <Text>{property.description}</Text>
-                            {property.price && <Text color="green.500">${property.price}</Text>}
+                            <Text fontWeight="bold" mt={2}>{property.title}</Text>
+                            <Text>{property.location}</Text>
+                            <Text>Check-in: {property.checkIn} | Check-out: {property.checkOut}</Text>
+                            <Text>Adults: {property.adults} | Children: {property.children}</Text>
+                            <Text color="green.500">${property.price} per night</Text>
                         </Box>
                     ))}
                 </SimpleGrid>
             ) : (
                 <Text>No properties found</Text>
             )}
-
-
         </Box>
     );
 };
+
 
 export default AddProperty;
