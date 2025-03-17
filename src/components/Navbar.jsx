@@ -23,9 +23,12 @@ const Navbar = () => {
 
                 <Flex gap={1} align="center">                  
                     {!user ? (
+                        <Flex gap={5}>
+                        <Button onClick={() => navigate("/login")}>Login</Button>
                         <Button onClick={() => handleGoogleSignIn(navigate)}>
                             Sign in with Google
                         </Button>
+                        </Flex>
                     ) : (
                         <>
                             <Link to="/add-property">

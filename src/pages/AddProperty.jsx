@@ -164,7 +164,7 @@ const AddProperty = () => {
                     {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />}
                 </Box>
 
-                <Button type="submit" color={"white"} bgColor={"#CE1B05"} borderRadius={8} isLoading={loading} w="full">Submit</Button>
+                <Button type="submit" color={"white"} bgColor={"#F44336"} borderRadius={8} isLoading={loading} w="full">Submit</Button>
             </VStack>
 
             <Heading size="lg" mt={10} mb={4} textAlign="left">All Properties</Heading>

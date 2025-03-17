@@ -18,8 +18,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/property/:id" element={<PropertyDetails />} />
-        <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-        <Route path="/add-property" element={<AddProperty />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
         <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/category/:category" element={<Dashboard />} />
       </Routes>
