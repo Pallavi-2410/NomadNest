@@ -25,22 +25,24 @@ const Dashboard = () => {
     const [sortOrder, setSortOrder] = useState("")
     const [filteredProperties, setFilteredProperties] = useState([]);
 
+
     const navigate = useNavigate();
-    // const { category } = useParams();
 
-    // const filterByCategory = (properties, category) => {
-    //     if (!category) return properties; // If no category is selected, return all properties
+    const { category } = useParams();
 
-    //     return properties.filter(property =>
-    //         (property.title && property.title.toLowerCase().includes(category.toLowerCase())) ||
-    //         (property.description && property.description.toLowerCase().includes(category.toLowerCase()))
-    //     );
-    // };
+    const filterByCategory = (properties, category) => {
+        if (!category) return properties; // If no category is selected, return all properties
 
-    // // Apply filtering
-    // const filteredByCategory = filterByCategory(filteredProperties.length > 0 ? filteredProperties : properties, category);
+        return properties.filter(property =>
+            (property.title && property.title.toLowerCase().includes(category.toLowerCase())) ||
+            (property.description && property.description.toLowerCase().includes(category.toLowerCase()))
+        );
+    };
 
-    // console.log("Selected Category:", category);
+    // Apply filtering
+    const filteredByCategory = filterByCategory(filteredProperties.length > 0 ? filteredProperties : properties, category);
+
+    console.log("Selected Category:", category);
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -48,6 +50,8 @@ const Dashboard = () => {
         });
         return () => unsubscribe();
     }, []);
+
+    const mergedProperties = [...new Set([...filteredProperties, ...filteredByCategory])];
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -70,15 +74,15 @@ const Dashboard = () => {
         const order = event.target.value;
         setSortOrder(order);
 
-        const sortedProperties = [...properties].sort((a, b) => {
+        const sortedProperties = [...mergedProperties].sort((a, b) => {
             if (order === "low-to-high") return a.price - b.price;
             if (order === "high-to-low") return b.price - a.price;
             return 0;
         });
-        setProperties(sortedProperties);
+        setFilteredProperties(sortedProperties);
     };
 
-    
+
     const handleSearch = () => {
         console.log("Running search with: ", { destination, checkInDate, checkOutDate, adults, children });
 
@@ -112,6 +116,10 @@ const Dashboard = () => {
         if (searchResults.length === 0) {
             alert("No property available for these dates.");
         }
+        if (!destination && !checkInDate && !checkOutDate && adults === 0 && children === 0) {
+            setFilteredProperties(properties);
+            return;
+        }
     };
 
 
@@ -126,10 +134,12 @@ const Dashboard = () => {
     // }
 
     const formatDateRange = (checkIn, checkOut) => {
+        if (!checkIn || !checkOut) return "Dates not available";
+        
         const checkInDate = new Date(checkIn);
         const checkOutDate = new Date(checkOut);
 
-        const options = { day: "numeric", month: "short" }; // Example: 16 Mar
+        const options = { day: "numeric", month: "short" }; 
         return `${checkInDate.toLocaleDateString("en-GB", options)} – ${checkOutDate.toLocaleDateString("en-GB", options)}`;
     };
 
@@ -283,6 +293,8 @@ const Dashboard = () => {
                             <Text fontSize="xs">Farms</Text>
                         </Flex>
                     </Link>
+
+                    
                     {/* <label For="">Sort by Price</label> */}
                     <select style={{ border: "1px solid gray", width: "200px", borderRadius: "5px", padding: "5px", fontSize: "small" }} onChange={handleSortChange} value={sortOrder} placeholder="Sort by Price">
                         <option value="">Sort by Price</option>
@@ -293,7 +305,7 @@ const Dashboard = () => {
             </Box>
 
 
-            {(filteredProperties.length > 0 ? filteredProperties : properties).length > 0 ? (
+            {/* {(filteredProperties.length > 0 ? filteredProperties : properties).length > 0 ? (
                 <SimpleGrid columns={[1, 2, 3, 4]} gap={5} height="600px">
                     {(filteredProperties.length > 0 ? filteredProperties : properties).map((property) => (
                         <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">
@@ -305,7 +317,7 @@ const Dashboard = () => {
                             />
                             <Heading size="md">{property.title}</Heading>
                             <Text>{property.location}</Text>
-                            {/* <Text style={{fontSize:"15px", color:"gray"}}>{property.description}</Text> */}
+                            
                             <Text style={{ fontSize: "15px", color: "gray" }}>{formatDateRange(property.checkIn, property.checkOut)}</Text>
 
                             <Text style={{ fontSize: "15px"}}>Price: &#8377;{property.price} <span style={{fontSize:"small"}}>night</span></Text>
@@ -317,12 +329,7 @@ const Dashboard = () => {
                 </SimpleGrid>
             ) : (
                 <Text>No properties found.</Text>
-            )}
-
-
-
-
-
+            )} */}
 
 
             {/* {filteredByCategory.length > 0 ? (
@@ -352,9 +359,34 @@ const Dashboard = () => {
             )} */}
 
 
+            {mergedProperties.length > 0 ? (
+                <SimpleGrid columns={[1, 2, 3, 4]} gap={5} height="600px">
+                    {mergedProperties.map((property) => (
+                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">
+                            <Image
+                                src={property.imageUrl}
+                                alt={property.title}
+                                // boxSize="200px"
+                                height="200px" width="300px"
+                                borderRadius="md"
+                            />
+                            <Heading size="md">{property.title}</Heading>
+                            <Text>{property.location}</Text>
+                            <Text style={{ fontSize: "15px", color: "gray" }}>{formatDateRange(property.checkIn, property.checkOut)}</Text>
+                            <Text style={{ fontSize: "15px" }}>Price: &#8377;{property.price} <span style={{ fontSize: "small" }}>night</span></Text>
+                            <Link to={`/property/${property.id}`}>
+                                <Button mt={2}>View Details</Button>
+                            </Link>
+                        </Box>
+                    ))}
+                </SimpleGrid>
+            ) : (
+                <Text>No properties found.</Text>
+            )}
+
         </Box>
 
     );
-}; 
+};
 
 export default Dashboard;

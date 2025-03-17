@@ -169,11 +169,11 @@ const AddProperty = () => {
 
             <Heading size="lg" mt={10} mb={4} textAlign="left">All Properties</Heading>
             {Array.isArray(properties) && properties.length > 0 ? (
-                <SimpleGrid columns={[1, 2]} gap={5}>
+                <SimpleGrid columns={[1, 2,3,4]} gap={5}>
                     {properties?.map((property) => (
                         <Box key={property.id} p={4} boxShadow="md" borderRadius="md">
                             {property.imageUrl && (
-                                <Image src={property.imageUrl} alt={property.title} boxSize="200px" borderRadius="md" />
+                                <Image src={property.imageUrl} alt={property.title} height="200px" width="300px" borderRadius="md" />
                             )}
                             <Text fontWeight="bold" mt={2}>{property.title}</Text>
                             <Text>{property.location}</Text>
