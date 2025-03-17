@@ -17,7 +17,9 @@ const Dashboard = () => {
     const [user, setUser] = useState(null);
     const [properties, setProperties] = useState([]);
     const [destination, setDestination] = useState("");
-    const [selectedDate, setSelectedDate] = useState("");
+    // const [selectedDate, setSelectedDate] = useState("");
+    const [checkInDate, setCheckInDate] = useState("");
+    const [checkOutDate, setCheckOutDate] = useState("");
     const [adults, setAdults] = useState(0);
     const [children, setChildren] = useState(0);
     const [sortOrder, setSortOrder] = useState("")
@@ -78,19 +80,23 @@ const Dashboard = () => {
 
     
     const handleSearch = () => {
-        console.log("Running search with: ", { destination, selectedDate, adults, children });
+        console.log("Running search with: ", { destination, checkInDate, checkOutDate, adults, children });
 
-        const selectedDateObj = selectedDate ? new Date(selectedDate) : null;
+        const checkIn = checkInDate ? new Date(checkInDate) : null;
+        const checkOut = checkOutDate ? new Date(checkOutDate) : null;
 
         const searchResults = properties.filter(property => {
             const location = property.location ? property.location.toLowerCase() : "";
             const matchesLocation = !destination || location.includes(destination.toLowerCase());
 
+            const propertyCheckIn = property.checkIn ? new Date(property.checkIn) : null;
+            const propertyCheckOut = property.checkOut ? new Date(property.checkOut) : null;
+
             const matchesDate =
-                !selectedDateObj ||
-                (property.checkIn && property.checkOut &&
-                    new Date(property.checkIn) <= selectedDateObj &&
-                    new Date(property.checkOut) >= selectedDateObj);
+                (!checkIn || !checkOut) ||
+                (propertyCheckIn && propertyCheckOut &&
+                    propertyCheckIn <= checkIn &&
+                    propertyCheckOut >= checkOut);
 
             const totalGuests = (adults || 0) + (children || 0);
             const maxGuests = property.maxGuests || Number.MAX_SAFE_INTEGER;
@@ -102,6 +108,10 @@ const Dashboard = () => {
         console.log("Filtered Properties: ", searchResults);
 
         setFilteredProperties(searchResults.length > 0 ? searchResults : properties);
+
+        if (searchResults.length === 0) {
+            alert("No property available for these dates.");
+        }
     };
 
 
@@ -142,13 +152,23 @@ const Dashboard = () => {
                 </Box>
 
                 <Box marginTop={0.5} flex="1">
-                    <Text fontSize={"sm"} p="0px 0px 0px 12px">Dates</Text>
+                    <Text fontSize={"sm"} p="0px 0px 0px 12px">Check-In</Text>
                     <Input
                         border={"none"}
                         _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                         type="date"
-                        value={selectedDate}
-                        onChange={(e) => setSelectedDate(e.target.value)}
+                        value={checkInDate}
+                        onChange={(e) => setCheckInDate(e.target.value)}
+                    />
+                </Box>
+                <Box marginTop={0.5} flex="1">
+                    <Text fontSize={"sm"} p="0px 0px 0px 12px">Check-Out</Text>
+                    <Input
+                        border={"none"}
+                        _focus={{ border: "none", boxShadow: "none", outline: "none" }}
+                        type="date"
+                        value={checkOutDate}
+                        onChange={(e) => setCheckOutDate(e.target.value)}
                     />
                 </Box>
 
