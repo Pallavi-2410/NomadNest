@@ -4,6 +4,7 @@ import { Box, Button, Flex, Text, Image, Heading } from "@chakra-ui/react";
 import { handleGoogleSignIn, handleSignOut } from "../firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
 import NomadNestLogo from "../assets/Logo/NomadLogo.png"
+import "../styles/styles.css"
 
 const Navbar = () => {
     const [user, setUser] = useState("");
@@ -34,7 +35,7 @@ const Navbar = () => {
                             <Link to="/add-property">
                                 <Button bg="transparent" color="black">Add Property</Button>
                                 </Link>
-                            <Text fontSize={"sm"}>{user?.displayName}</Text>
+                                <Text fontSize={"sm"} borderRadius={8} p={"9px"} m={3} border={"1px solid"} borderColor={"gray.200"} _hover={{ boxShadow:" rgba(0, 0, 0, 0.16) 0px 1px 4px;"}}>{user?.displayName}</Text>
                             <Button onClick={handleSignOut} bg="transparent" color="black">
                                 Sign Out
                             </Button>

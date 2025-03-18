@@ -3,6 +3,7 @@ import { db } from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
 import { Box, Button, Input, Textarea, VStack, Heading, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import "../styles/styles.css"
 
 const AddProperty = () => {
     const IMGUR_CLIENT_ID = "6fe986d96cc8786";

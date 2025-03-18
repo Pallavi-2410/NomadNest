@@ -148,7 +148,7 @@ const Dashboard = () => {
             {/* SearchBar */}
 
             <Flex gap={15} mb={6} p={3} height="80px" marginX={100} borderRadius="60px" border="1px solid" borderColor="gray.100" boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-                <Box marginTop={0.5} flex="1" marginLeft={4} >
+                <Box marginTop={0.5} flex="1" marginLeft={4}>
                     <Text fontSize={"sm"} p="0px 0px 0px 20px">Where</Text>
                     <Input
                         p="0px 0px 0px 20px"
@@ -163,6 +163,7 @@ const Dashboard = () => {
                 <Box marginTop={0.5} flex="1">
                     <Text fontSize={"sm"} p="0px 0px 0px 12px">Check-In</Text>
                     <Input
+                        color={"gray.400"}
                         border={"none"}
                         _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                         type="date"
@@ -173,6 +174,7 @@ const Dashboard = () => {
                 <Box marginTop={0.5} flex="1">
                     <Text fontSize={"sm"} p="0px 0px 0px 12px">Check-Out</Text>
                     <Input
+                        color={"gray.400"}
                         border={"none"}
                         _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                         type="date"
@@ -186,6 +188,7 @@ const Dashboard = () => {
                         <Box>
                             <Text fontSize="smaller" p="0px 0px 0px 12px">Adults</Text>
                             <Input
+                                color={"gray.400"}
                                 border={"none"}
                                 _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                                 type="number"
@@ -197,6 +200,7 @@ const Dashboard = () => {
                         <Box >
                             <Text fontSize="smaller" p="0px 0px 0px 12px">Children</Text>
                             <Input
+                                color={"gray.400"}
                                 border={"none"}
                                 _focus={{ border: "none", boxShadow: "none", outline: "none" }}
                                 type="number"

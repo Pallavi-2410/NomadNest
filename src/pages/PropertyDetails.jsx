@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { db } from "../firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-import { Box, Flex, Text, Spinner, Button, Heading, Image } from "@chakra-ui/react";
+import { Box, Flex, Text, Spinner, Button, Heading, Image, HStack, VStack, Grid } from "@chakra-ui/react";
 import { auth } from "../firebase/firebaseConfig";
+import "../styles/styles.css"
+import { LuMapPinCheckInside } from "react-icons/lu";
+import { MdOutlineFreeCancellation } from "react-icons/md";
+import { MdOutlineAcUnit } from "react-icons/md";
+
 
 const PropertyDetails = () => {
   const { id } = useParams();
@@ -71,28 +76,85 @@ const PropertyDetails = () => {
   const grandTotal = totalPrice + serviceFee;
 
   return (
+    <Box p={5} maxW="76%" mx="auto">
+      
     <Box>
-    <Box p={5} maxW="700px" mx="auto">
       <Heading size="lg" mb={4}>{property.title}</Heading>
-      <Image src={property.imageUrl} alt={property.title} boxSize="300px" borderRadius="md" />
+      <Image mb={5} src={property.imageUrl} alt={property.title} boxSize="100%" borderRadius="10px" />
 
-      <Text fontSize="lg" mt={3}>{property.description}</Text>
-      <Text fontSize="md">Adults - {property.adults}, Children - {property.children}</Text>
-      <Text fontSize="xl" fontWeight="bold" mt={2}>Price: ₹{property.price} /night</Text>
+      <Text fontSize="lg" m={3}>{property.description}</Text>
+        <Text fontSize="md" m={3}>Adults - {property.adults}, Children - {property.children}</Text>
+        <Text m={3} fontSize="xl" fontWeight="bold">Price: ₹{property.price} /night</Text>
 
-      <hr style={{ marginTop: "25px", marginBottom: "25px", }} />
+      <hr style={{ marginTop: "30px", marginBottom: "30px", }} />
 
-      <Text fontSize={"m"} fontWeight={"bold"}>Hosted by {auth.currentUser?.displayName ? auth.currentUser.displayName : "No user"}</Text>
+      <Text fontSize={"m"} fontWeight={"bold"} m={3}>Hosted by {auth.currentUser?.displayName ? auth.currentUser.displayName : "No user"}</Text>
     </Box>
 
-    <Box maxW={"40%"} p={5} mt={6} boxShadow="md" borderRadius="lg" m={"auto"}>
+    <Flex maxW={"100%"} justifyContent={"center"}>
+      <Box>
+        <HStack border={"1px solid"} borderColor={"gray.300"} p={6} borderRadius={10} width={"85%"} justifyContent={"space-evenly"}>
+          <Text fontWeight={"bold"} fontSize={"large"}>Guest favourite</Text>
+            <Box height="30px" width="1px" bg="gray.300" mx={3} />
+          <Text>4.9 </Text>
+            <Box height="30px" width="1px" bg="gray.300" mx={3} />
+            <Text>30 <span style={{fontSize:"12px"}}>Reviews</span></Text>
+        </HStack>
+          <hr style={{ marginTop: "30px", marginBottom: "30px", width:"85%" }}/>
+
+          <VStack alignItems={"left"} fontSize={"14px"}>
+            {/* Check-in Experience */}
+            <Heading fontSize={"17px"} mb={-2} display={"flex"} alignItems={"center"} gap={5}>
+              <Box fontSize={"30px"}>
+                <LuMapPinCheckInside />
+              </Box>
+              <Box>
+                Great check-in experience
+                <Text mb={2} color={"gray.600"} fontWeight={"normal"} fontSize={"md"}>Recent guests loved the smooth start to this stay.</Text>
+              </Box>
+            </Heading>
+
+            {/* Free Cancellation */}
+            <Heading fontSize={"17px"} mb={-2} display={"flex"} alignItems={"center"} gap={5}>
+              <Box fontSize={"30px"}>
+                <MdOutlineFreeCancellation />
+              </Box>
+              <Box>
+                Free cancellation before 5 days of Check-In
+                <Text mb={2} color={"gray.600"} fontWeight={"normal"} fontSize={"md"}>Get a full refund if you change your mind.</Text>
+              </Box>
+            </Heading>
+
+            {/* Staying Cool */}
+            <Heading fontSize={"17px"} mb={-2} display={"flex"} alignItems={"center"} gap={5}>
+              <Box fontSize={"30px"}>
+                <MdOutlineAcUnit />
+              </Box>
+              <Box>
+                Designed for staying cool
+                <Text mb={2} color={"gray.600"} fontWeight={"normal"} fontSize={"md"}>Beat the heat with the A/C and ceiling fan.</Text>
+              </Box>
+            </Heading>
+          </VStack>
+
+          <hr style={{ marginTop: "30px", marginBottom: "30px", width: "85%" }} />
+
+          <Text maxW={"90%"} lineHeight={"25px"}>The property is located at the most prime location with all the amenities available.
+            You will find yourself cradled in the midst of Hills, Valleys and springs in a wooded environment.
+            My place is good for couples, solo adventurers, and families, and particularly those wishing for a long stay.
+            All the villas are self catering.
+          </Text>
+
+      </Box>
+
+    <Box maxW={"40%"} p={5} mt={6} boxShadow="md" borderRadius={8} m={"auto"}>
       <Flex justify="space-between" align="center">
         <Text fontSize="2xl" fontWeight="bold">
           ₹{property.price} <span style={{ fontSize: "18px", fontWeight: "normal" }}>night</span>
         </Text>
       </Flex>
 
-      <Box mt={3} p={3} border="1px solid gray" borderRadius="md">
+      <Box mt={3} p={3} border="1px solid gray" borderRadius={8}>
         {/* Check-in & Check-out Date Selection */}
         <Flex justify="space-between" align="center">
           <Box>
@@ -145,7 +207,7 @@ const PropertyDetails = () => {
         </select>
       </Box>
 
-      <Button mt={4} width="100%" colorScheme="pink" fontSize="lg">Reserve</Button>
+          <Button mt={4} width="100%" bg="#F44336 " color={"white"} fontSize="lg">Reserve</Button>
 
       <Text fontSize="sm" color="gray.500" mt={2}>You won't be charged yet</Text>
 
@@ -171,6 +233,7 @@ const PropertyDetails = () => {
         </>
       )}
     </Box>
+      </Flex>
     </Box>
   );
 };
