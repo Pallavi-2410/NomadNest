@@ -21,7 +21,6 @@ const AddProperty = () => {
 
     console.log(properties, "properties")
 
-    // Upload image to Imgur API
     const uploadImageToImgur = async (file) => {
         if (!file) return "";
 
@@ -39,7 +38,7 @@ const AddProperty = () => {
 
             const data = await response.json();
             if (data.success) {
-                return data.data.link; // Return the Imgur image URL
+                return data.data.link; 
             } else {
                 throw new Error("Image upload failed");
             }
@@ -49,18 +48,16 @@ const AddProperty = () => {
         }
     };
 
-    // Handle form submission
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-
         try {
             const fileInput = e.target.querySelector('input[type="file"]');
             const file = fileInput.files[0];
             const uploadedImageUrl = await uploadImageToImgur(file);
             setImageUrl(uploadedImageUrl);
 
-            // Add property details to Firestore
             await addDoc(collection(db, "properties"), {
                 title,
                 description,
@@ -83,7 +80,6 @@ const AddProperty = () => {
         }
     };
 
-    // Fetch properties from Firestore
     const fetchProperties = async () => {
         const querySnapshot = await getDocs(collection(db, "properties"));
         const propertyList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -108,7 +104,7 @@ const AddProperty = () => {
 
                 <Box w="full" mb={2}>
                     <Text mb={1}>Location</Text>
-                    <Input placeholder="Enter location (City, Country)" value={location} onChange={(e) => setLocation(e.target.value)} required />
+                    <Input placeholder="Enter location (Address, City, Country)" value={location} onChange={(e) => setLocation(e.target.value)} required />
                 </Box>
 
                 <Box w="full" mb={2}>

@@ -26,12 +26,12 @@ const Dashboard = () => {
     const [filteredProperties, setFilteredProperties] = useState([]);
 
 
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const { category } = useParams();
 
     const filterByCategory = (properties, category) => {
-        if (!category) return properties; // If no category is selected, return all properties
+        if (!category) return properties;
 
         return properties.filter(property =>
             (property.title && property.title.toLowerCase().includes(category.toLowerCase())) ||
@@ -39,7 +39,6 @@ const Dashboard = () => {
         );
     };
 
-    // Apply filtering
     const filteredByCategory = filterByCategory(filteredProperties.length > 0 ? filteredProperties : properties, category);
 
     console.log("Selected Category:", category);
@@ -303,60 +302,6 @@ const Dashboard = () => {
                     </select>
                 </Flex>
             </Box>
-
-
-            {/* {(filteredProperties.length > 0 ? filteredProperties : properties).length > 0 ? (
-                <SimpleGrid columns={[1, 2, 3, 4]} gap={5} height="600px">
-                    {(filteredProperties.length > 0 ? filteredProperties : properties).map((property) => (
-                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">
-                            <Image
-                                src={property.imageUrl}
-                                alt={property.title}
-                                boxSize="200px"
-                                borderRadius="md"
-                            />
-                            <Heading size="md">{property.title}</Heading>
-                            <Text>{property.location}</Text>
-                            
-                            <Text style={{ fontSize: "15px", color: "gray" }}>{formatDateRange(property.checkIn, property.checkOut)}</Text>
-
-                            <Text style={{ fontSize: "15px"}}>Price: &#8377;{property.price} <span style={{fontSize:"small"}}>night</span></Text>
-                            <Link to={`/property/${property.id}`}>
-                                <Button mt={2}>View Details</Button>
-                            </Link>
-                        </Box>
-                    ))}
-                </SimpleGrid>
-            ) : (
-                <Text>No properties found.</Text>
-            )} */}
-
-
-            {/* {filteredByCategory.length > 0 ? (
-                <SimpleGrid columns={[1, 2, 3, 4]} gap={5} height="600px">
-                    {filteredByCategory.map((property) => (
-                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">
-                            <Image
-                                src={property.imageUrl}
-                                alt={property.title}
-                                boxSize="200px"
-                                borderRadius="md"
-                            />
-                            <Heading size="md">{property.title}</Heading>
-                            <Text>{property.location}</Text>
-                            <Text style={{ fontSize: "15px", color: "gray" }}>{property.description}</Text>
-                            <Text style={{ fontSize: "15px", color: "gray" }}>{formatDateRange(property.checkIn, property.checkOut)}</Text>
-
-                            <Text style={{ fontSize: "15px" }}>Price: &#8377;{property.price} <span style={{ fontSize: "small" }}>night</span></Text>
-                            <Link to={`/property/${property.id}`}>
-                                <Button mt={2}>View Details</Button>
-                            </Link>
-                        </Box>
-                    ))}
-                </SimpleGrid>
-            ) : (
-                <Text>No properties found.</Text>
-            )} */}
 
 
             {mergedProperties.length > 0 ? (
