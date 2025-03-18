@@ -39,7 +39,7 @@ const AddProperty = () => {
 
             const data = await response.json();
             if (data.success) {
-                return data.data.link; 
+                return data.data.link;
             } else {
                 throw new Error("Image upload failed");
             }
@@ -100,7 +100,26 @@ const AddProperty = () => {
 
                 <Box w="full" mb={2}>
                     <Text mb={1}>Property Title</Text>
-                    <Input placeholder="Enter property title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+                    {/* <Input placeholder="Enter property title" value={title} onChange={(e) => setTitle(e.target.value)} required /> */}
+                    <select style={{
+                        border: "1px solid #E4E4E7",
+                        height: "39px",
+                        width: "100%",
+                        borderRadius: "5px",
+                        padding: "5px",
+                        fontSize: "14px",
+                        color: "gray"
+                    }} value={title} onChange={(e) => setTitle(e.target.value)}>
+                        <option value="">Enter property title</option>
+                        <option value="Rooms">Rooms</option>
+                        <option value="Lakefront">Lakefront</option>
+                        <option value="Amazing View">Amazing View</option>
+                        <option value="Beachfront">Beachfront</option>
+                        <option value="Treehouses">Treehouses</option>
+                        <option value="Luxe">Luxe</option>
+                        <option value="Amazing pools">Amazing pools</option>
+                        <option value="Farms">Farms</option>
+                    </select>
                 </Box>
 
                 <Box w="full" mb={2}>
@@ -157,7 +176,7 @@ const AddProperty = () => {
 
                 <Box w="full" mb={2}>
                     <Text mb={1}>Upload Property Image</Text>
-                    <Input type="file" accept="image/*" required />
+                    <Input p={1.5} type="file" accept="image/*" required />
                     {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />}
                 </Box>
 
@@ -166,7 +185,7 @@ const AddProperty = () => {
 
             <Heading size="lg" mt={10} mb={4} textAlign="left">All Properties</Heading>
             {Array.isArray(properties) && properties.length > 0 ? (
-                <SimpleGrid columns={[1, 2,3,4]} gap={5}>
+                <SimpleGrid columns={[1, 2, 3, 4]} gap={5}>
                     {properties?.map((property) => (
                         <Box key={property.id} p={4} boxShadow="md" borderRadius="md">
                             {property.imageUrl && (

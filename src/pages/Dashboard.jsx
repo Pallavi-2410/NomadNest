@@ -50,7 +50,8 @@ const Dashboard = () => {
         return () => unsubscribe();
     }, []);
 
-    const mergedProperties = [...new Set([...filteredProperties, ...filteredByCategory])];
+    // const mergedProperties = [...new Set([...filteredProperties, ...filteredByCategory])];
+    const mergedProperties = filteredProperties.length > 0 ? filteredProperties : filteredByCategory;
 
     useEffect(() => {
         const fetchProperties = async () => {
@@ -73,7 +74,7 @@ const Dashboard = () => {
         const order = event.target.value;
         setSortOrder(order);
 
-        const sortedProperties = [...mergedProperties].sort((a, b) => {
+        const sortedProperties = [...filteredProperties].sort((a, b) => {
             if (order === "low-to-high") return a.price - b.price;
             if (order === "high-to-low") return b.price - a.price;
             return 0;
@@ -88,7 +89,7 @@ const Dashboard = () => {
         const checkIn = checkInDate ? new Date(checkInDate) : null;
         const checkOut = checkOutDate ? new Date(checkOutDate) : null;
 
-        const searchResults = properties.filter(property => {
+        let searchResults = properties.filter(property => {
             const location = property.location ? property.location.toLowerCase() : "";
             const matchesLocation = !destination || location.includes(destination.toLowerCase());
 
@@ -108,6 +109,17 @@ const Dashboard = () => {
             return matchesLocation && matchesDate && matchesGuests;
         });
 
+        // Apply category filtering as well
+        searchResults = filterByCategory(searchResults, category);
+
+        console.log("Filtered Properties: ", searchResults);
+
+        setFilteredProperties(searchResults.length > 0 ? searchResults : properties);
+
+        if (searchResults.length === 0) {
+            alert("No property available for these dates.");
+        }
+// till here
         console.log("Filtered Properties: ", searchResults);
 
         setFilteredProperties(searchResults.length > 0 ? searchResults : properties);

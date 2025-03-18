@@ -8,6 +8,8 @@ import "../styles/styles.css"
 import { LuMapPinCheckInside } from "react-icons/lu";
 import { MdOutlineFreeCancellation } from "react-icons/md";
 import { MdOutlineAcUnit } from "react-icons/md";
+import oliveright from "../assets/HostImages/olive-right.png"
+import oliveleft from "../assets/HostImages/olive-left.png"
 
 
 const PropertyDetails = () => {
@@ -79,8 +81,9 @@ const PropertyDetails = () => {
     <Box p={5} maxW="76%" mx="auto">
       
     <Box>
-      <Heading size="lg" mb={4}>{property.title}</Heading>
-      <Image mb={5} src={property.imageUrl} alt={property.title} boxSize="100%" borderRadius="10px" />
+      <Heading textAlign={"center"} size="lg" mb={4}>{property.title}</Heading>
+
+        <Image mb={5} src={property.imageUrl} alt={property.title} boxSize={"700px"} mx={"auto"} borderRadius="10px"  />
 
       <Text fontSize="lg" m={3}>{property.description}</Text>
         <Text fontSize="md" m={3}>Adults - {property.adults}, Children - {property.children}</Text>
@@ -94,7 +97,11 @@ const PropertyDetails = () => {
     <Flex maxW={"100%"} justifyContent={"center"}>
       <Box>
         <HStack border={"1px solid"} borderColor={"gray.300"} p={6} borderRadius={10} width={"85%"} justifyContent={"space-evenly"}>
-          <Text fontWeight={"bold"} fontSize={"large"}>Guest favourite</Text>
+            <Text fontWeight="bold" fontSize="large" display="flex" alignItems="center" gap={2}>
+              <img src={oliveleft} alt="oliveleft" style={{ width: "25px"}} />
+              Guest favourite
+              <img src={oliveright} alt="oliveRight" style={{ width: "25px"}} />
+            </Text>
             <Box height="30px" width="1px" bg="gray.300" mx={3} />
           <Text>4.9 </Text>
             <Box height="30px" width="1px" bg="gray.300" mx={3} />
@@ -207,7 +214,7 @@ const PropertyDetails = () => {
         </select>
       </Box>
 
-          <Button mt={4} width="100%" bg="#F44336 " color={"white"} fontSize="lg">Reserve</Button>
+          <Button mt={4} width="100%" bg="#F44336 " color={"white"} >Reserve</Button>
 
       <Text fontSize="sm" color="gray.500" mt={2}>You won't be charged yet</Text>
 
