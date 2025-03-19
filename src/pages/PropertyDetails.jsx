@@ -38,7 +38,7 @@ const PropertyDetails = () => {
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
           const propertyData = docSnap.data();
-          setProperty(propertyData);
+          setProperty({ id: docSnap.id, ...propertyData });
           setCheckIn(propertyData.checkIn || "");
           setCheckOut(propertyData.checkOut || "");
         } else {
@@ -217,8 +217,37 @@ const PropertyDetails = () => {
           ))}
         </select>
       </Box>
+      
           <Box textAlign="center" mt={4}>
-            <Button width="100%" maxW="500px" bg="#F44336" color="white" _hover={{ bg: "#D32F2F" }} _active={{ bg: "#B71C1C" }} onClick={() => navigate("/paymentpage")}>Reserve</Button>
+            <Button
+              width="100%"
+              maxW="500px"
+              bg="#F44336"
+              color="white"
+              _hover={{ bg: "#D32F2F" }}
+              _active={{ bg: "#B71C1C" }}
+              onClick={(e) => {
+                e.preventDefault(); // Prevent default behavior
+                if (property.id) {
+                  navigate(`/payment`, {
+                    state: {
+                      checkIn,
+                      checkOut,
+                      guest,
+                      nights,
+                      pricePerNight: property.price,
+                      propertyId: property.id,
+                      propertyTitle: property.title,
+                      propertyLocation: property.location,
+                      propertyDescription: property.description,
+                      propertyImage: property.imageUrl,
+                    },
+                  });
+                }
+              }}
+            >
+              Reserve
+            </Button>
           </Box>
           
 

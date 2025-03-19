@@ -23,7 +23,8 @@ function App() {
         <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
         <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/category/:category" element={<Dashboard />} />
-        <Route path="/paymentpage" element={ <PaymentPage/>}/>
+        {/* <Route path="/payment/:id" element={<PaymentPage />} /> */}
+        <Route path="/payment" element={<PaymentPage />} />
       </Routes>
     </Router>
   );
