@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { db } from "../firebase/firebaseConfig";
 import { doc, getDoc } from "firebase/firestore";
-import { Box, Flex, Text, Spinner, Button, Heading, Image, HStack, VStack, Grid } from "@chakra-ui/react";
+import { Box, Flex, Text, Spinner, Button, Heading, Image, HStack, VStack, Grid, Link } from "@chakra-ui/react";
 import { auth } from "../firebase/firebaseConfig";
 import "../styles/styles.css"
 import { LuMapPinCheckInside } from "react-icons/lu";
@@ -21,6 +21,8 @@ const PropertyDetails = () => {
   const [checkOut, setCheckOut] = useState("");
   const [guest, setGuest] = useState(1);
   const [nights, setNights] = useState(0);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -154,6 +156,8 @@ const PropertyDetails = () => {
 
       </Box>
 
+
+{/* Card */}
     <Box maxW={"40%"} p={5} mt={6} boxShadow="md" borderRadius={8} m={"auto"}>
       <Flex justify="space-between" align="center">
         <Text fontSize="2xl" fontWeight="bold">
@@ -213,8 +217,10 @@ const PropertyDetails = () => {
           ))}
         </select>
       </Box>
-
-          <Button mt={4} width="100%" bg="#F44336 " color={"white"} >Reserve</Button>
+          <Box textAlign="center" mt={4}>
+            <Button width="100%" maxW="500px" bg="#F44336" color="white" _hover={{ bg: "#D32F2F" }} _active={{ bg: "#B71C1C" }} onClick={() => navigate("/paymentpage")}>Reserve</Button>
+          </Box>
+          
 
       <Text fontSize="sm" color="gray.500" mt={2}>You won't be charged yet</Text>
 

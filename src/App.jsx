@@ -8,6 +8,7 @@ import Dashboard from "./pages/Dashboard";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import AddProperty from "./pages/AddProperty";
+import PaymentPage from "./pages/PaymentPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
         <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/category/:category" element={<Dashboard />} />
+        <Route path="/paymentpage" element={ <PaymentPage/>}/>
       </Routes>
     </Router>
   );
