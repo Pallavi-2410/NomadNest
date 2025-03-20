@@ -38,7 +38,7 @@ const Navbar = () => {
                                 <Button bg="transparent" color="black">Add Property</Button>
                             </Link>
 
-                                <Flex fontSize={"sm"} borderRadius={8} p={"9px"} m={3} border={"1px solid"} borderColor={"gray.200"} _hover={{ boxShadow: " rgba(0, 0, 0, 0.16) 0px 1px 4px;" }} fontWeight={"medium"} align={"center"} gap={2}>
+                            <Flex fontSize={"sm"} borderRadius={8} p={"9px"} m={3} border={"1px solid"} borderColor={"gray.200"} _hover={{ boxShadow: " rgba(0, 0, 0, 0.16) 0px 1px 4px;" }} fontWeight={"medium"} align={"center"} gap={2}>
                                 <FaRegUser />
                                 <Text >{user?.displayName}</Text>
                             </Flex>

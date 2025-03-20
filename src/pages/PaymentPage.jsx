@@ -1,10 +1,13 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Flex, Text, Button, Image, Heading, Input, RadioGroup, Stack } from "@chakra-ui/react";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Box, Flex, Text, Button, Image, Heading, Input, HStack, List, ListItem } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, differenceInDays } from "date-fns";
-import { Radio } from "@/components/ui/radio";
+import QRCode from "../assets/QR-Code.png";
+import { IoIosArrowBack } from "react-icons/io";
+import { auth } from "../firebase/firebaseConfig";
+import { SlDiamond } from "react-icons/sl";
 
 const PaymentPage = () => {
     const location = useLocation();
@@ -13,6 +16,8 @@ const PaymentPage = () => {
     // Retrieve property details from location.state
     const { propertyId, checkIn, checkOut, guest, nights, pricePerNight, propertyImage, propertyTitle, propertyDescription } =
         location.state || {};
+
+        console.log(location.state, "location state")
 
     if (!propertyId || !checkIn || !checkOut || !guest || !nights || !pricePerNight) {
         return (
@@ -25,6 +30,7 @@ const PaymentPage = () => {
     }
 
     // Editable states
+    const [user, setUser] = useState("");
     const [selectedCheckIn, setSelectedCheckIn] = useState(new Date(checkIn));
     const [selectedCheckOut, setSelectedCheckOut] = useState(new Date(checkOut));
     const [isEditingDates, setIsEditingDates] = useState(false);
@@ -39,9 +45,7 @@ const PaymentPage = () => {
         cvv: "",
         cardholderName: ""
     });
-    const [confirmationMessage, setConfirmationMessage] = useState("");
-
-
+    const [showQRCode, setShowQRCode] = useState(false); // Toggle QR Code popup
 
     // Calculate updated nights dynamically
     const updatedNights = differenceInDays(selectedCheckOut, selectedCheckIn);
@@ -55,14 +59,16 @@ const PaymentPage = () => {
     const serviceFee = 5000;
     const grandTotal = totalPrice + serviceFee;
 
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+            setUser(currentUser);
+        });
+        return () => unsubscribe();
+    }, []);
+
     const handleCardInputChange = (e) => {
         setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
     };
-
-    const handlePaymentConfirmation = (paymentInfo) => {
-        alert(`Payment Successful using ${paymentInfo.method}`);
-    };
-
 
     const handlePaymentSubmit = () => {
         let paymentInfo = {};
@@ -75,48 +81,69 @@ const PaymentPage = () => {
             paymentInfo = { method: "Credit/Debit Card", ...cardDetails };
         }
 
-        handlePaymentConfirmation(paymentInfo);
+        alert(`Payment Successful using ${paymentInfo.method}`);
     };
 
     return (
-        <Box p={5} maxW="76%" mx="auto">
-            <Heading size="lg" mb={4}>Confirm and Pay</Heading>
+        <Box  p={5} maxW="76%" mx="auto" >
+            <Flex align={"center"} mb={8} >                
+                <IoIosArrowBack cursor="pointer"
+                    onClick={() => navigate(`/property/${propertyId}`)} size={"25px"}/>
+                <Heading ml={3} fontSize={"3xl"}>Confirm and Pay</Heading>
+            </Flex>
 
-            <Flex justifyContent="space-between">
-                {/* Left Section - Trip details */}
-                <Box flex="1" pr={10}>
-                    <Box border="1px solid gray" borderRadius={8} p={5} mb={5}>
-                        <Text fontSize="lg" fontWeight="bold">Your trip</Text>
+            <Flex justifyContent="space-between" >
+                
+                <Box flex="1" maxW={"50%"}>
+                    <HStack border={"1px solid"} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} >                        
+                            <Box>
+                                <Heading mb={2}>This is a rare find.</Heading>
+                                <Text>{user?.displayName}'s place is usually booked</Text>
+                            </Box>
+                            <SlDiamond size={"30px"} color="#F44336" />                        
+                    </HStack>
+
+                    <hr style={{ marginTop: "30px" }} />
+
+                    <Box  pt={6} borderRadius={10}  justifyContent={"space-evenly"}>
+                        <Heading>Your Trip</Heading>
 
                         <Box mt={3}>
                             <Flex justify="space-between" align="center" my={4}>
                                 <Text fontWeight="bold">Dates:</Text>
-                                <Text>{formattedCheckIn} - {formattedCheckOut}</Text>
+                                <HStack>
+                                <Text justifyContent={"flex-end"}>{formattedCheckIn} - {formattedCheckOut}</Text>
                                 <Button size="sm" onClick={() => setIsEditingDates(!isEditingDates)}>Edit</Button>
+                                </HStack>
                             </Flex>
 
                             {isEditingDates && (
+                                <Flex justify="space-between" align="center" my={4}>
                                 <Box>
-                                    <Text>Select Check-in Date:</Text>
+                                    <Text p={1}>Select Check-in Date:</Text>
+                                    <Box p={1} color={"gray"}>
                                     <DatePicker
                                         selected={selectedCheckIn}
                                         onChange={(date) => setSelectedCheckIn(date)}
                                         dateFormat="dd-MMM-yyyy"
                                         minDate={new Date()}
-                                    />
-                                    <Text>Select Check-out Date:</Text>
+                                        /></Box>
+                                    <Text p={1}>Select Check-out Date:</Text>
+                                    <Box p={1} color={"gray"}>
                                     <DatePicker
                                         selected={selectedCheckOut}
                                         onChange={(date) => setSelectedCheckOut(date)}
                                         dateFormat="dd-MMM-yyyy"
                                         minDate={selectedCheckIn}
-                                    />
-                                    <Button mt={2} onClick={() => setIsEditingDates(false)}>Save</Button>
+                                        /></Box>
+                                    <br />                                    
                                 </Box>
+                                    <Button mt={2} onClick={() => setIsEditingDates(false)}>Save</Button>
+                                </Flex>
                             )}
                         </Box>
 
-                        <hr style={{ margin: "20px 0" }} />
+                        {/* <hr style={{ margin: "20px 0" }} /> */}
 
                         <Box>
                             <Flex justify="space-between" align="center" my={4}>
@@ -143,17 +170,16 @@ const PaymentPage = () => {
                             </Flex>
                         </Box>
                     </Box>
+                    <hr style={{ marginTop: "30px" }} />
 
                     {/* Payment Method Selection */}
+                    <Heading pt={6} pb={6}>Pay with</Heading>
                     <select
                         value={paymentMethod}
-                        onChange={(e) => {
-                            setPaymentMethod(e.target.value);
-                            setUpiOption("upi-id"); // Set default UPI option to prevent blank screen
-                        }}
-                        mt={3}
+                        onChange={(e) => setPaymentMethod(e.target.value)}
+                        style={{ border: "2px solid gray", width: "100%", height: "60px", borderRadius: "5px", padding: "10px" }}
                     >
-                        <option value="">Choose Payment Option</option>
+                        
                         <option value="upi">UPI</option>
                         <option value="credit-card">Credit Card</option>
                         <option value="debit-card">Debit Card</option>
@@ -164,93 +190,136 @@ const PaymentPage = () => {
                         <Box mt={3}>
                             <Text fontWeight="bold">Choose UPI Payment Method:</Text>
                             <Flex mt={2}>
-                                <Button
-                                    onClick={() => setUpiOption("upi-id")}
-                                    colorScheme={upiOption === "upi-id" ? "blue" : "gray"}
-                                    mr={2}
-                                >
+                                <Button onClick={() => setUpiOption("upi-id")} mr={2}>
                                     Pay using UPI ID
                                 </Button>
-                                <Button
-                                    onClick={() => setUpiOption("qr-code")}
-                                    colorScheme={upiOption === "qr-code" ? "blue" : "gray"}
-                                >
+                                <Button onClick={() => { setUpiOption("qr-code"); setShowQRCode(true); }}>
                                     Pay using QR Code
                                 </Button>
                             </Flex>
 
                             {upiOption === "upi-id" && (
-                                <Input
-                                    mt={3}
-                                    placeholder="Enter your UPI ID (e.g., yourname@upi)"
-                                    value={upiID}
-                                    onChange={(e) => setUpiID(e.target.value)}
-                                />
+                                <Input mt={3} placeholder="Enter your UPI ID (e.g., yourname@upi)" value={upiID} onChange={(e) => setUpiID(e.target.value)} />
                             )}
 
-                            {upiOption === "qr-code" && (
-                                <Image mt={3} src="https://via.placeholder.com/150" alt="UPI QR Code" />
+                            {upiOption === "qr-code" && showQRCode && (
+                                <Box
+                                    position="fixed"
+                                    top="50%"
+                                    left="50%"
+                                    transform="translate(-50%, -50%)"
+                                    bg="white"
+                                    p={5}
+                                    borderRadius={10}
+                                    boxShadow="lg"
+                                    zIndex={1000}
+                                >
+                                    <Text fontWeight="bold" textAlign="center" mb={3}>Scan to Pay</Text>
+                                    <Image src={QRCode} alt="UPI QR Code" />
+                                    <Button
+                                        mt={3}
+                                        colorScheme="red"
+                                        display="block"
+                                        mx="auto"
+                                        onClick={() => setShowQRCode(false)}
+                                    >
+                                        Close
+                                    </Button>
+                                </Box>
                             )}
                         </Box>
                     )}
 
                     {/* Credit/Debit Card Form */}
-                    {(paymentMethod === "credit-card" || paymentMethod === "debit-card") && (
-                        <Box mt={3}>
-                            <Input
-                                placeholder="Card Number"
-                                name="cardNumber"
-                                value={cardDetails.cardNumber}
-                                onChange={handleCardInputChange}
-                                mt={2}
-                            />
-                            <Flex gap={2} mt={2}>
+                    {
+                        (paymentMethod === "credit-card" || paymentMethod === "debit-card") && (
+                            <Box mt={3}>
                                 <Input
-                                    placeholder="Expiration Date (MM/YY)"
-                                    name="expiryDate"
-                                    value={cardDetails.expiryDate}
+                                    placeholder="Card Number"
+                                    name="cardNumber"
+                                    value={cardDetails.cardNumber}
                                     onChange={handleCardInputChange}
+                                    mt={2}
                                 />
+                                <Flex gap={2} mt={2}>
+                                    <Input
+                                        placeholder="Expiration Date (MM/YY)"
+                                        name="expiryDate"
+                                        value={cardDetails.expiryDate}
+                                        onChange={handleCardInputChange}
+                                    />
+                                    <Input
+                                        placeholder="CVV"
+                                        name="cvv"
+                                        value={cardDetails.cvv}
+                                        onChange={handleCardInputChange}
+                                    />
+                                </Flex>
                                 <Input
-                                    placeholder="CVV"
-                                    name="cvv"
-                                    value={cardDetails.cvv}
+                                    placeholder="Cardholder Name"
+                                    name="cardholderName"
+                                    value={cardDetails.cardholderName}
                                     onChange={handleCardInputChange}
+                                    mt={2}
                                 />
-                            </Flex>
-                            <Input
-                                placeholder="Cardholder Name"
-                                name="cardholderName"
-                                value={cardDetails.cardholderName}
-                                onChange={handleCardInputChange}
-                                mt={2}
-                            />
-                        </Box>
-                    )}
+                            </Box>
+                        )
+                    }
+                    <hr style={{ marginTop: "30px" }} />
                     {/* Cancellation Policy */}
-                    <Box border="1px solid gray" borderRadius={8} p={5} mb={5}>
-                        <Text fontSize="lg" fontWeight="bold">Cancellation policy</Text>
+                    <Box>
+                        <Heading pt={6} pb={6}>Cancellation policy</Heading>
                         <Text color="gray.600">
-                            Free cancellation before 5 days of check-in. Get a full refund if you change your mind.
+                            <span style={{fontWeight: "bold"}}>Free cancellation before 5 days of check-in.</span> Get a full refund if you change your mind.
                         </Text>
                     </Box>
+                    <hr style={{ marginTop: "30px" }} />
+                    <Box>
+                        <Heading pt={6} pb={6}>Ground rules</Heading>
+                        <Text>We ask every guest to remember a few simple things about what makes a great guest.
+                            <br />
+                            <br />
+                            · Follow the house rules
+                            <br />
+                            · Treat your Host’s home like your own</Text>
+                    </Box>
+                    <hr style={{ marginTop: "30px" }} />
+
+                    <Text pt={6} pb={6} fontSize={"xs"}>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, Airbnb's Rebooking and Refund Policy and that Airbnb can charge my payment method if I’m responsible for damage.</Text>
+
+                    <Button
+                        width="50%"
+                        height={"60px"}
+                        fontSize={"xl"}
+                        bg="#F44336"
+                        color="white"
+                        _hover={{ bg: "#D32F2F" }}
+                        onClick={handlePaymentSubmit}
+                    >
+                        Confirm and Pay
+                    </Button>
                 </Box>
 
+
+
                 {/* Right Section - Property details & Price details */}
-                <Box maxW="40%" border="1px solid gray" borderRadius={8} p={5}>
+                <Box flex="1" border={"1px solid"} maxW={"40%"} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} maxH={"-webkit-fit-content"} >
                     {/* Property Image */}
-                    <Image mb={5} src={propertyImage} alt={propertyTitle} boxSize={"250px"} borderRadius="10px" />
+                    <HStack>
+                    <Image mb={5} src={propertyImage} alt={propertyTitle} boxSize={"200px"} borderRadius="10px" />
 
                     {/* Property Title & Description */}
                     <Box>
                         <Text fontSize="lg" fontWeight="bold">{propertyTitle}</Text>
                         <Text fontSize="sm" color="gray.500" mb={2}>{propertyDescription}</Text>
                     </Box>
+                    </HStack>
 
                     <hr style={{ margin: "20px 0" }} />
 
                     {/* Price details */}
                     <Box>
+                        <Heading pb={6}>Your Total</Heading>
                         <Flex justify="space-between">
                             <Text>₹{pricePerNight} x {updatedNights} nights</Text>
                             <Text fontWeight="bold">₹{totalPrice}</Text>
@@ -264,22 +333,12 @@ const PaymentPage = () => {
                         <hr style={{ marginTop: "20px", marginBottom: "20px" }} />
 
                         <Flex justify="space-between">
-                            <Text fontWeight="bold">Grand Total</Text>
+                            <Text fontWeight="bold">Total (INR)</Text>
                             <Text fontWeight="bold">₹{grandTotal}</Text>
                         </Flex>
                     </Box>
 
-                    <Button
-                        width="100%"
-                        mt={4}
-                        bg="#F44336"
-                        color="white"
-                        _hover={{ bg: "#D32F2F" }}
-                        _active={{ bg: "#B71C1C" }}
-                        onClick={handlePaymentSubmit}
-                    >
-                        Confirm and Pay
-                    </Button>
+                    
                 </Box>
             </Flex>
         </Box>
@@ -287,3 +346,21 @@ const PaymentPage = () => {
 };
 
 export default PaymentPage;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

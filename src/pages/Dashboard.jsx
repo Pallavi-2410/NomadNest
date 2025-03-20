@@ -82,6 +82,8 @@ const Dashboard = () => {
         setFilteredProperties(sortedProperties);
     };
 
+    
+
 
     const handleSearch = () => {
         console.log("Running search with: ", { destination, checkInDate, checkOutDate, adults, children });
@@ -154,6 +156,7 @@ const Dashboard = () => {
         return `${checkInDate.toLocaleDateString("en-GB", options)} – ${checkOutDate.toLocaleDateString("en-GB", options)}`;
     };
 
+    console.log(properties, "property in dashboard")
     return (
         <Box p={5} maxW="90%" mx="auto">
 

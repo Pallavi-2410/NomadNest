@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar";
 import PrivateRoute from "./components/PrivateRoute";
 import AddProperty from "./pages/AddProperty";
 import PaymentPage from "./pages/PaymentPage";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -21,11 +22,10 @@ function App() {
         <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
-        <Route path="/property/:id" element={<PropertyDetails />} />
         <Route path="/category/:category" element={<Dashboard />} />
-        {/* <Route path="/payment/:id" element={<PaymentPage />} /> */}
         <Route path="/payment" element={<PaymentPage />} />
       </Routes>
+      <Footer/>
     </Router>
   );
 }
