@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Box, Flex, Text, Button, Image, Heading } from "@chakra-ui/react";
+import { Box, Flex, Text, Button, Image, Heading, Input, RadioGroup, Stack } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, differenceInDays } from "date-fns";
+import { Radio } from "@/components/ui/radio";
 
 const PaymentPage = () => {
     const location = useLocation();
@@ -29,6 +30,18 @@ const PaymentPage = () => {
     const [isEditingDates, setIsEditingDates] = useState(false);
     const [isEditingGuests, setIsEditingGuests] = useState(false);
     const [selectedGuest, setSelectedGuest] = useState(guest);
+    const [paymentMethod, setPaymentMethod] = useState("");
+    const [upiOption, setUpiOption] = useState(""); // UPI QR or UPI ID
+    const [upiID, setUpiID] = useState("");
+    const [cardDetails, setCardDetails] = useState({
+        cardNumber: "",
+        expiryDate: "",
+        cvv: "",
+        cardholderName: ""
+    });
+    const [confirmationMessage, setConfirmationMessage] = useState("");
+
+
 
     // Calculate updated nights dynamically
     const updatedNights = differenceInDays(selectedCheckOut, selectedCheckIn);
@@ -41,6 +54,29 @@ const PaymentPage = () => {
     const totalPrice = updatedNights * pricePerNight;
     const serviceFee = 5000;
     const grandTotal = totalPrice + serviceFee;
+
+    const handleCardInputChange = (e) => {
+        setCardDetails({ ...cardDetails, [e.target.name]: e.target.value });
+    };
+
+    const handlePaymentConfirmation = (paymentInfo) => {
+        alert(`Payment Successful using ${paymentInfo.method}`);
+    };
+
+
+    const handlePaymentSubmit = () => {
+        let paymentInfo = {};
+
+        if (paymentMethod === "upi") {
+            paymentInfo = upiOption === "upi-id"
+                ? { method: "UPI ID", upiID }
+                : { method: "UPI QR Code" };
+        } else {
+            paymentInfo = { method: "Credit/Debit Card", ...cardDetails };
+        }
+
+        handlePaymentConfirmation(paymentInfo);
+    };
 
     return (
         <Box p={5} maxW="76%" mx="auto">
@@ -108,16 +144,89 @@ const PaymentPage = () => {
                         </Box>
                     </Box>
 
-                    {/* Payment Method */}
-                    <Box border="1px solid gray" borderRadius={8} p={5} mb={5}>
-                        <Text fontSize="lg" fontWeight="bold">Pay with</Text>
-                        <select style={{ width: "100%", padding: "10px", borderRadius: "5px", border: "1px solid #ccc" }}>
-                            <option value="upi">UPI</option>
-                            <option value="credit-card">Credit Card</option>
-                            <option value="debit-card">Debit Card</option>
-                        </select>
-                    </Box>
+                    {/* Payment Method Selection */}
+                    <select
+                        value={paymentMethod}
+                        onChange={(e) => {
+                            setPaymentMethod(e.target.value);
+                            setUpiOption("upi-id"); // Set default UPI option to prevent blank screen
+                        }}
+                        mt={3}
+                    >
+                        <option value="">Choose Payment Option</option>
+                        <option value="upi">UPI</option>
+                        <option value="credit-card">Credit Card</option>
+                        <option value="debit-card">Debit Card</option>
+                    </select>
 
+                    {/* UPI Payment Options */}
+                    {paymentMethod === "upi" && (
+                        <Box mt={3}>
+                            <Text fontWeight="bold">Choose UPI Payment Method:</Text>
+                            <Flex mt={2}>
+                                <Button
+                                    onClick={() => setUpiOption("upi-id")}
+                                    colorScheme={upiOption === "upi-id" ? "blue" : "gray"}
+                                    mr={2}
+                                >
+                                    Pay using UPI ID
+                                </Button>
+                                <Button
+                                    onClick={() => setUpiOption("qr-code")}
+                                    colorScheme={upiOption === "qr-code" ? "blue" : "gray"}
+                                >
+                                    Pay using QR Code
+                                </Button>
+                            </Flex>
+
+                            {upiOption === "upi-id" && (
+                                <Input
+                                    mt={3}
+                                    placeholder="Enter your UPI ID (e.g., yourname@upi)"
+                                    value={upiID}
+                                    onChange={(e) => setUpiID(e.target.value)}
+                                />
+                            )}
+
+                            {upiOption === "qr-code" && (
+                                <Image mt={3} src="https://via.placeholder.com/150" alt="UPI QR Code" />
+                            )}
+                        </Box>
+                    )}
+
+                    {/* Credit/Debit Card Form */}
+                    {(paymentMethod === "credit-card" || paymentMethod === "debit-card") && (
+                        <Box mt={3}>
+                            <Input
+                                placeholder="Card Number"
+                                name="cardNumber"
+                                value={cardDetails.cardNumber}
+                                onChange={handleCardInputChange}
+                                mt={2}
+                            />
+                            <Flex gap={2} mt={2}>
+                                <Input
+                                    placeholder="Expiration Date (MM/YY)"
+                                    name="expiryDate"
+                                    value={cardDetails.expiryDate}
+                                    onChange={handleCardInputChange}
+                                />
+                                <Input
+                                    placeholder="CVV"
+                                    name="cvv"
+                                    value={cardDetails.cvv}
+                                    onChange={handleCardInputChange}
+                                />
+                            </Flex>
+                            <Input
+                                placeholder="Cardholder Name"
+                                name="cardholderName"
+                                value={cardDetails.cardholderName}
+                                onChange={handleCardInputChange}
+                                mt={2}
+                            />
+                        </Box>
+                    )}
                     {/* Cancellation Policy */}
                     <Box border="1px solid gray" borderRadius={8} p={5} mb={5}>
                         <Text fontSize="lg" fontWeight="bold">Cancellation policy</Text>
@@ -167,7 +276,7 @@ const PaymentPage = () => {
                         color="white"
                         _hover={{ bg: "#D32F2F" }}
                         _active={{ bg: "#B71C1C" }}
-                        onClick={() => navigate("/confirmation")}
+                        onClick={handlePaymentSubmit}
                     >
                         Confirm and Pay
                     </Button>
