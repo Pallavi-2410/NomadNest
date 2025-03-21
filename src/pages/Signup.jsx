@@ -16,7 +16,7 @@ const Signup = () => {
         try {
             await createUserWithEmailAndPassword(auth, email, password);
             console.log("Signup successful");
-            navigate("/dashboard");
+            navigate("/");
         }catch(err) {
             console.error("Signup Error:", err.message);
             setError("Error creating account, Try again")

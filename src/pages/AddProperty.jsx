@@ -73,7 +73,7 @@ const AddProperty = () => {
             });
 
             alert("Property added successfully!");
-            navigate("/dashboard");
+            navigate("/");
         } catch (error) {
             console.error("Error adding property:", error);
         } finally {
@@ -176,7 +176,7 @@ const AddProperty = () => {
 
                 <Box w="full" mb={2}>
                     <Text mb={1}>Upload Property Image</Text>
-                    <Input p={1.5} type="file" accept="image/*" required />
+                    <Input p={6} type="file" accept="image/*" required />
                     {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />}
                 </Box>
 

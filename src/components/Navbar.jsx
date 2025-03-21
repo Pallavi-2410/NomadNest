@@ -22,7 +22,7 @@ const Navbar = () => {
     return (
         <Box p={2}>
             <Flex justify="space-between" align="center">
-                <Link to="/dashboard" onClick={() => setFilteredProperties(properties)}><Image width="120px" marginLeft="50px" p={2} src={NomadNestLogo} alt="NomadNestLogo" /></Link>
+                <Link to="/" onClick={() => setFilteredProperties(properties)}><Image width="120px" marginLeft="50px" p={2} src={NomadNestLogo} alt="NomadNestLogo" /></Link>
 
                 <Flex gap={1} align="center">
                     {!user ? (

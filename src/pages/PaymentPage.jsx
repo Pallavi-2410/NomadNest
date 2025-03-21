@@ -215,7 +215,7 @@ const PaymentPage = () => {
                                     zIndex={1000}
                                 >
                                     <Text fontWeight="bold" textAlign="center" mb={3}>Scan to Pay</Text>
-                                    <Image src={QRCode} alt="UPI QR Code" />
+                                    <Image src={QRCode} alt="UPI QR Code" maxW={"400px"}/>
                                     <Button
                                         mt={3}
                                         colorScheme="red"
