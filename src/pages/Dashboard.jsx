@@ -12,6 +12,7 @@ import { PiFarm } from "react-icons/pi";
 import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import { useParams } from "react-router-dom";
 import "../styles/styles.css"
+import PropertyCard from "./PropertyCard";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -151,7 +152,7 @@ const Dashboard = () => {
 
     
     return (
-        <Box p={5} maxW="90%" mx="auto" >
+        <Box p={5} maxW="80%" mx="auto" >
 
             {/* SearchBar */}
 
