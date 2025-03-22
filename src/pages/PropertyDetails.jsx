@@ -114,7 +114,7 @@ const PropertyDetails = () => {
           <hr style={{ marginTop: "30px", marginBottom: "30px", width:"85%" }}/>
 
           <VStack alignItems={"left"} fontSize={"14px"}>
-            {/* Check-in Experience */}
+
             <Heading fontSize={"17px"} mb={-2} display={"flex"} alignItems={"center"} gap={5}>
               <Box fontSize={"30px"}>
                 <LuMapPinCheckInside />
@@ -125,7 +125,6 @@ const PropertyDetails = () => {
               </Box>
             </Heading>
 
-            {/* Free Cancellation */}
             <Heading fontSize={"17px"} mb={-2} display={"flex"} alignItems={"center"} gap={5}>
               <Box fontSize={"30px"}>
                 <MdOutlineFreeCancellation />
@@ -136,7 +135,6 @@ const PropertyDetails = () => {
               </Box>
             </Heading>
 
-            {/* Staying Cool */}
             <Heading fontSize={"17px"} mb={-2} display={"flex"} alignItems={"center"} gap={5}>
               <Box fontSize={"30px"}>
                 <MdOutlineAcUnit />
@@ -168,7 +166,7 @@ const PropertyDetails = () => {
       </Flex>
 
       <Box mt={3} p={3} border="1px solid gray" borderRadius={8}>
-        {/* Check-in & Check-out Date Selection */}
+
         <Flex justify="space-between" align="center">
           <Box>
             <Text fontSize="xs" fontWeight="bold">CHECK-IN</Text>
@@ -207,7 +205,6 @@ const PropertyDetails = () => {
 
         <hr style={{ marginTop: "20px", marginBottom: "20px" }} />
 
-        {/* Guests Selection */}
         <Text fontSize="xs" fontWeight="bold">GUESTS</Text>
         <select
           value={guest}
@@ -229,7 +226,7 @@ const PropertyDetails = () => {
               _hover={{ bg: "#D32F2F" }}
               _active={{ bg: "#B71C1C" }}
               onClick={(e) => {
-                e.preventDefault(); // Prevent default behavior
+                e.preventDefault();
                 if (property.id) {
                   navigate(`/payment`, {
                     state: {

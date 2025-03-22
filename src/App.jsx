@@ -25,7 +25,6 @@ function App() {
         <Route path="/host" element={ <Host/> }/>
         <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
         <Route path="/category/:category" element={<Dashboard />} />
-        {/* <Route path="/payment/:id" element={<PaymentPage />} /> */}
         <Route path="/payment" element={<PaymentPage />} />
 
 

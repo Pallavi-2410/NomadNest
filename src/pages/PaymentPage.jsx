@@ -13,7 +13,6 @@ const PaymentPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Retrieve property details from location.state
     const { propertyId, checkIn, checkOut, guest, nights, pricePerNight, propertyImage, propertyTitle, propertyDescription } =
         location.state || {};
 
@@ -29,7 +28,6 @@ const PaymentPage = () => {
         );
     }
 
-    // Editable states
     const [user, setUser] = useState("");
     const [selectedCheckIn, setSelectedCheckIn] = useState(new Date(checkIn));
     const [selectedCheckOut, setSelectedCheckOut] = useState(new Date(checkOut));
@@ -37,7 +35,7 @@ const PaymentPage = () => {
     const [isEditingGuests, setIsEditingGuests] = useState(false);
     const [selectedGuest, setSelectedGuest] = useState(guest);
     const [paymentMethod, setPaymentMethod] = useState("");
-    const [upiOption, setUpiOption] = useState(""); // UPI QR or UPI ID
+    const [upiOption, setUpiOption] = useState("");
     const [upiID, setUpiID] = useState("");
     const [cardDetails, setCardDetails] = useState({
         cardNumber: "",
@@ -45,16 +43,13 @@ const PaymentPage = () => {
         cvv: "",
         cardholderName: ""
     });
-    const [showQRCode, setShowQRCode] = useState(false); // Toggle QR Code popup
+    const [showQRCode, setShowQRCode] = useState(false);
 
-    // Calculate updated nights dynamically
     const updatedNights = differenceInDays(selectedCheckOut, selectedCheckIn);
 
-    // Format dates to "dd-MMM"
     const formattedCheckIn = selectedCheckIn ? format(selectedCheckIn, "dd-MMM") : "";
     const formattedCheckOut = selectedCheckOut ? format(selectedCheckOut, "dd-MMM") : "";
 
-    // Pricing calculations
     const totalPrice = updatedNights * pricePerNight;
     const serviceFee = 5000;
     const grandTotal = totalPrice + serviceFee;
@@ -81,7 +76,7 @@ const PaymentPage = () => {
             paymentInfo = { method: "Credit/Debit Card", ...cardDetails };
         }
 
-        alert(`Payment Successful using ${paymentInfo.method}`);
+        alert(`Payment Successful using ${paymentInfo.method}.`);
     };
 
     return (
@@ -179,7 +174,7 @@ const PaymentPage = () => {
                         onChange={(e) => setPaymentMethod(e.target.value)}
                         style={{ border: "2px solid gray", width: "100%", height: "60px", borderRadius: "5px", padding: "10px" }}
                     >
-                        
+                        <option value="">Select payment method</option>
                         <option value="upi">UPI</option>
                         <option value="credit-card">Credit Card</option>
                         <option value="debit-card">Debit Card</option>

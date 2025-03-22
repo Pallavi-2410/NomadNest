@@ -12,7 +12,6 @@ import { PiFarm } from "react-icons/pi";
 import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import { useParams } from "react-router-dom";
 import "../styles/styles.css"
-import PropertyCard from "./PropertyCard";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -25,7 +24,7 @@ const Dashboard = () => {
     const [children, setChildren] = useState(0);
     const [sortOrder, setSortOrder] = useState("")
     const [filteredProperties, setFilteredProperties] = useState([]);
-
+    
 
     // const navigate = useNavigate();
 
@@ -114,7 +113,7 @@ const Dashboard = () => {
             return matchesLocation && matchesDate && matchesGuests;
         });
 
-        // Apply category filtering as well
+        // category filter
         searchResults = filterByCategory(searchResults, category);
 
         console.log("Filtered Properties: ", searchResults);
@@ -320,7 +319,7 @@ const Dashboard = () => {
             {mergedProperties.length > 0 ? (
                 <SimpleGrid columns={[1, 2, 3, 4]} gap={5} >
                     {mergedProperties.map((property) => (
-                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">
+                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">                            
                             <Image
                                 src={property.imageUrl}
                                 alt={property.title}
@@ -348,14 +347,6 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
-
-
-
-
-
-
 
 
 
