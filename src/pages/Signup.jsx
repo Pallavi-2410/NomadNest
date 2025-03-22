@@ -1,4 +1,4 @@
-import { Box, Button, Heading, Input, Text } from '@chakra-ui/react';
+import { Box, Button, Flex, Heading, Input, Text } from '@chakra-ui/react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,7 @@ const Signup = () => {
     }
 
     return (
+        <Flex minHeight="100vh" flexDirection="column">
         <Box maxW={"500px"} mx={"auto"} mt={"100px"} p={5} border={"1px solid"} borderColor={"gray.300"} borderRadius={8}>
             <Heading>Sign Up</Heading>
             {error && <Text>{error}</Text>}
@@ -32,6 +33,7 @@ const Signup = () => {
             <Button onClick={handleSignUp}>Sign Up</Button>
             <Text>Already have an account ? <Button varient="link" onClick={() => navigate("/login")}>Login</Button></Text>
         </Box>
+        </Flex>
     )
 }
 

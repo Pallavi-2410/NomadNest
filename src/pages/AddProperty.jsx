@@ -195,7 +195,7 @@ const AddProperty = () => {
                             <Text>{property.location}</Text>
                             <Text>Check-in: {property.checkIn} | Check-out: {property.checkOut}</Text>
                             <Text>Adults: {property.adults} | Children: {property.children}</Text>
-                            <Text color="green.500">${property.price} per night</Text>
+                            <Text color="green.600">&#8377;{property.price} per night</Text>
                         </Box>
                     ))}
                 </SimpleGrid>

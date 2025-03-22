@@ -25,6 +25,8 @@ function App() {
         <Route path="/category/:category" element={<Dashboard />} />
         {/* <Route path="/payment/:id" element={<PaymentPage />} /> */}
         <Route path="/payment" element={<PaymentPage />} />
+
+        
       </Routes>
       <FooterBottom />
     </Router>

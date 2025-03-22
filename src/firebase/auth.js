@@ -5,7 +5,7 @@ export const handleGoogleSignIn = async (navigate) => {
     try {
         const result = await signInWithPopup(auth, provider);
         console.log("User signed in:", result.user);
-        navigate("/dashboard");
+        navigate("/");
         return result.user;
     } catch (error) {
         console.error("Error signing in:", error);

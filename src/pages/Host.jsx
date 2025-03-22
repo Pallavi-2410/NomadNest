@@ -1,7 +1,10 @@
-import { Box, Heading, Text, VStack } from '@chakra-ui/react'
+import { Box, Button, Heading, Text, VStack } from '@chakra-ui/react'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Host = () => {
+    const navigate = useNavigate();
+
     return (
         <Box>
             <Heading>It's easy to get started on Nomad Nest.
@@ -15,12 +18,13 @@ const Host = () => {
                 <hr />
 
                 <Heading>Make it stand out</Heading>
-                <Text>Add 5 or more photos plus a title and description - we'll help you out.</Text>
+                <Text>Add photo plus a title and description - we'll help you out.</Text>
 
                 <hr />
 
                 <Heading>Finish up and publish</Heading>
                 <Text>Choose a starting price, verify a few details, then publish your listing.</Text>
+                <Button onClick={navigate("/add-property")}>Lets start..!!</Button>
             </VStack>
 
         </Box>
