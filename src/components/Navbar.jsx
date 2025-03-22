@@ -34,7 +34,7 @@ const Navbar = () => {
                         </Flex>
                     ) : (
                         <>
-                            <Link to="/add-property">
+                            <Link to="/host">
                                 <Button bg="transparent" color="black">Add Property</Button>
                             </Link>
 
