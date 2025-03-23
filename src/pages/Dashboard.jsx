@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image } from "@chakra-ui/react";
-import { LuSearch, LuBedDouble } from "react-icons/lu";
+import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image, HStack, Drawer} from "@chakra-ui/react";
+import { LuSearch, LuBedDouble} from "react-icons/lu";
 import { FaSwimmingPool, FaWater } from "react-icons/fa";
 import { GiWindow, GiTreehouse } from "react-icons/gi";
 import { TbBeach } from "react-icons/tb";
@@ -11,7 +11,9 @@ import { MdOutlineEmojiFoodBeverage } from "react-icons/md";
 import { PiFarm } from "react-icons/pi";
 import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import { useParams } from "react-router-dom";
-import "../styles/styles.css"
+import { IoIosArrowDown } from "react-icons/io";
+import "../styles/styles.css";
+import { DrawerCloseTrigger, DrawerContent } from "@/components/ui/drawer";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -24,12 +26,12 @@ const Dashboard = () => {
     const [children, setChildren] = useState(0);
     const [sortOrder, setSortOrder] = useState("")
     const [filteredProperties, setFilteredProperties] = useState([]);
-    
+    const [isOpen, setIsOpen] = useState(false);
 
     // const navigate = useNavigate();
 
     const { category } = useParams();
-    
+
 
     const filterByCategory = (properties, category) => {
         if (!category) return properties;
@@ -70,7 +72,7 @@ const Dashboard = () => {
 
         fetchProperties();
     }, []);
-    
+
 
     const handleSortChange = (event) => {
         const order = event.target.value;
@@ -121,7 +123,7 @@ const Dashboard = () => {
         setFilteredProperties(searchResults.length > 0 ? searchResults : properties);
 
         if (searchResults.length === 0) {
-            alert("No property available for these dates.");
+            alert("No property available.");
         }
         // till here
         console.log("Filtered Properties: ", searchResults);
@@ -129,7 +131,7 @@ const Dashboard = () => {
         setFilteredProperties(searchResults.length > 0 ? searchResults : properties);
 
         if (searchResults.length === 0) {
-            alert("No property available for these dates.");
+            alert("No property available.");
         }
         if (!destination && !checkInDate && !checkOutDate && adults === 0 && children === 0) {
             setFilteredProperties(properties);
@@ -149,14 +151,43 @@ const Dashboard = () => {
 
     console.log(properties, "property in dashboard")
 
-    
+
     return (
         <Box p={5} maxW="80%" mx="auto" >
 
             {/* SearchBar */}
+            <Flex
+                display={{ base: "flex", md: "none" }}
+                align="center"
+                justify="center"
+                p={3}
+                bg="gray.100"
+                borderRadius="50px"
+                cursor="pointer"
+                onClick={() => setIsOpen(true)}
+                mb={6}
+            >
+                <LuSearch />
+                <Text ml={2}>Start your search</Text>
+            </Flex>
 
-            <Flex gap={15} mb={6} p={3} height="80px" marginX={100} borderRadius="60px" border="1px solid" borderColor="gray.100" boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px;">
-                <Box marginTop={0.5} flex="1" marginLeft={4}>
+            <Flex gap={15}
+                display={{ base: "none", md: "flex" }}
+                mb={6}
+                p={3}
+                height="80px"
+                marginX={100}
+                borderRadius="60px"
+                border="1px solid"
+                borderColor="gray.100"
+                boxShadow="rgba(149, 157, 165, 0.2) 0px 8px 24px;">
+
+
+
+                <Box
+                    marginTop={0.5}
+                    flex="1" marginLeft={4}>
+
                     <Text fontSize={"sm"} p="0px 0px 0px 20px">Where</Text>
                     <Input
                         p="0px 0px 0px 20px"
@@ -225,10 +256,54 @@ const Dashboard = () => {
                 </Box>
             </Flex>
 
+            {/* Custom Modal */}
+            {isOpen && (
+                <Box
+                    position="fixed"
+                    top="0"
+                    left="0"
+                    width="100%"
+                    height="100%"
+                    bg="rgba(0, 0, 0, 0.4)"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    zIndex="1000"
+                    mb={6}
+                    p={3}
+                >
+                    <Box bg="white" p={6} borderRadius="10px" width="90%" maxWidth="400px">
+                        <Text fontSize="lg" fontWeight="bold">Search</Text>
+
+                        <Text fontSize={"sm"} mt={3} ml={2} >Where</Text>
+                        <Input placeholder="Search destination" value={destination} onChange={(e) => setDestination(e.target.value)} m={1}/>
+
+                        <Text fontSize={"sm"} mt={3} ml={2}>Check-In</Text>
+                        <Input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} m={1}/>
+
+                        <Text fontSize={"sm"} mt={3} ml={2}>Check-Out</Text>
+                        <Input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} m={1}/>
+
+                        <Text fontSize="smaller" mt={3} ml={2}>Adults</Text>
+                        <Input type="number" placeholder="Adults" value={adults} min="1" onChange={(e) => setAdults(Number(e.target.value))} m={1}/>
+
+                        <Text fontSize="smaller" mt={3} ml={2}>Children</Text>
+                        <Input type="number" placeholder="Children" value={children} min="0" onChange={(e) => setChildren(Number(e.target.value))} m={1}/>
+
+                        <Flex mt={4} justify="space-between">
+                            <Button onClick={() => setIsOpen(false)}>Close</Button>
+                            <Button bg="#F44336" color="white" onClick={handleSearch}>Search</Button>
+                        </Flex>
+                    </Box>
+                </Box>
+            )}
+
+
             <Box as="hr" mb={8} border="1px solid gray.300" />
 
 
             {/* Second Nav */}
+
             <Box>
                 <Flex gap={10} color="gray.500" flexDirection="row" m="20px 0px 20px 40px"
                     height={"40px"} justifyContent={"center"}>
@@ -319,7 +394,7 @@ const Dashboard = () => {
             {mergedProperties.length > 0 ? (
                 <SimpleGrid columns={[1, 2, 3, 4]} gap={5} >
                     {mergedProperties.map((property) => (
-                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">                            
+                        <Box key={property.id} p={4} borderWidth="1px" borderRadius="md">
                             <Image
                                 src={property.imageUrl}
                                 alt={property.title}
@@ -340,7 +415,7 @@ const Dashboard = () => {
             ) : (
                 <Text>No properties found.</Text>
             )}
-        
+
         </Box>
 
     );

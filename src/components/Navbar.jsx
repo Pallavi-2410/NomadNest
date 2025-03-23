@@ -12,12 +12,25 @@ const Navbar = () => {
     const [filteredProperties, setFilteredProperties] = useState([]);
     const navigate = useNavigate();
 
+    // useEffect(() => {
+    //     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+    //         setUser(currentUser);
+    //     });
+    //     return () => unsubscribe();
+    // }, []);
+
     useEffect(() => {
-        const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-            setUser(currentUser);
+        const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
+            if (currentUser) {
+                await currentUser.reload(); // Ensure we get updated user info
+                setUser(auth.currentUser);  // Fetch the latest user details
+            } else {
+                setUser(null);
+            }
         });
         return () => unsubscribe();
     }, []);
+
 
     return (
         <Box p={2}>
