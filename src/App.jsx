@@ -18,16 +18,14 @@ function App() {
       <Navbar />
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/property/:id" element={<PropertyDetails />} />
-        <Route path="/" element={<Dashboard />} />
         <Route path="/host" element={ <Host/> }/>
         <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
         <Route path="/category/:category" element={<Dashboard />} />
         <Route path="/payment" element={<PaymentPage />} />
-
-
       </Routes>
       <FooterBottom />
     </Router>
