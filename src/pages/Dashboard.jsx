@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image, HStack, Drawer} from "@chakra-ui/react";
-import { LuSearch, LuBedDouble} from "react-icons/lu";
+import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image, useBreakpointValue} from "@chakra-ui/react";
+import { LuSearch, LuBedDouble } from "react-icons/lu";
 import { FaSwimmingPool, FaWater } from "react-icons/fa";
 import { GiWindow, GiTreehouse } from "react-icons/gi";
 import { TbBeach } from "react-icons/tb";
@@ -11,9 +11,9 @@ import { MdOutlineEmojiFoodBeverage } from "react-icons/md";
 import { PiFarm } from "react-icons/pi";
 import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import { useParams } from "react-router-dom";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import "../styles/styles.css";
-import { DrawerCloseTrigger, DrawerContent } from "@/components/ui/drawer";
 
 const Dashboard = () => {
     const [user, setUser] = useState(null);
@@ -27,6 +27,8 @@ const Dashboard = () => {
     const [sortOrder, setSortOrder] = useState("")
     const [filteredProperties, setFilteredProperties] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
+    const scrollRef = useRef(null);
+    const isMobile = useBreakpointValue({ base: true, md: false });
 
     // const navigate = useNavigate();
 
@@ -151,6 +153,15 @@ const Dashboard = () => {
 
     console.log(properties, "property in dashboard")
 
+    const scroll = (direction) => {
+        if (scrollRef.current) {
+            const scrollAmount = 250; // Scroll amount
+            scrollRef.current.scrollBy({
+                left: direction === "left" ? -scrollAmount : scrollAmount,
+                behavior: "smooth",
+            });
+        }
+    };
 
     return (
         <Box p={5} maxW="80%" mx="auto" >
@@ -276,19 +287,19 @@ const Dashboard = () => {
                         <Text fontSize="lg" fontWeight="bold">Search</Text>
 
                         <Text fontSize={"sm"} mt={3} ml={2} >Where</Text>
-                        <Input placeholder="Search destination" value={destination} onChange={(e) => setDestination(e.target.value)} m={1}/>
+                        <Input placeholder="Search destination" value={destination} onChange={(e) => setDestination(e.target.value)} m={1} />
 
                         <Text fontSize={"sm"} mt={3} ml={2}>Check-In</Text>
-                        <Input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} m={1}/>
+                        <Input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} m={1} />
 
                         <Text fontSize={"sm"} mt={3} ml={2}>Check-Out</Text>
-                        <Input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} m={1}/>
+                        <Input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} m={1} />
 
                         <Text fontSize="smaller" mt={3} ml={2}>Adults</Text>
-                        <Input type="number" placeholder="Adults" value={adults} min="1" onChange={(e) => setAdults(Number(e.target.value))} m={1}/>
+                        <Input type="number" placeholder="Adults" value={adults} min="1" onChange={(e) => setAdults(Number(e.target.value))} m={1} />
 
                         <Text fontSize="smaller" mt={3} ml={2}>Children</Text>
-                        <Input type="number" placeholder="Children" value={children} min="0" onChange={(e) => setChildren(Number(e.target.value))} m={1}/>
+                        <Input type="number" placeholder="Children" value={children} min="0" onChange={(e) => setChildren(Number(e.target.value))} m={1} />
 
                         <Flex mt={4} justify="space-between">
                             <Button onClick={() => setIsOpen(false)}>Close</Button>
@@ -299,96 +310,118 @@ const Dashboard = () => {
             )}
 
 
-            <Box as="hr" mb={8} border="1px solid gray.300" />
+            <Box as="hr" mb={5} border="1px solid gray.300" />
 
 
             {/* Second Nav */}
 
-            <Box>
+            {/* <Box>
                 <Flex gap={10} color="gray.500" flexDirection="row" m="20px 0px 20px 40px"
-                    height={"40px"} justifyContent={"center"}>
-                    <Link to="/category/rooms">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <LuBedDouble size={"20px"} />
-                            <Text fontSize="xs">Rooms</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/lakefront">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <FaWater size={"20px"} />
-                            <Text fontSize="xs">Lakefront</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/amazingview">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <GiWindow size={"20px"} />
-                            <Text fontSize="xs">Amazing View</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/beachfront">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <TbBeach size={"20px"} />
-                            <Text fontSize="xs">Beachfront</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/treehouses">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <GiTreehouse size={"20px"} />
-                            <Text fontSize="xs">Treehouses</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/luxe">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <MdOutlineEmojiFoodBeverage size={"20px"} />
-                            <Text fontSize="xs">Luxe</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/poolSideProperty">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <FaSwimmingPool size={"20px"} />
-                            <Text fontSize="xs">Amazing pools</Text>
-                        </Flex>
-                    </Link>
-                    <Link to="/category/farms">
-                        <Flex direction="column" align="center" justify="center" _hover={{
-                            color: "black",
-                            borderBottom: "2px solid black"
-                        }}>
-                            <PiFarm size={"20px"} />
-                            <Text fontSize="xs">Farms</Text>
-                        </Flex>
-                    </Link>
+                    height={"40px"} justifyContent={"center"}> */}
+                    
 
+            <Flex flexDirection={{ base: "column", md: "row" }} alignItems={{ base: "center", md: "center" }} m="20px" justifyContent="space-between" gap={{ base: 2, md: 5 }} >
+                <Box position="relative" maxW="100%" overflow="hidden" flex="1" pb={{base:"8px", md: "0px"}}>
+                    {/* Show scroll buttons ONLY on mobile */}
+                    {isMobile && (
+                        <Box
+                            position="absolute"
+                            left="0px"
+                            top="50%"
+                            transform="translateY(-50%)"
+                            zIndex="10"
+                            cursor="pointer"
+                            onClick={() => scroll("left")}
+                            border={"1px solid"}
+                            borderRadius={"50%"}
+                            p={1}
+                            color="gray"
+                        >
+                            <IoIosArrowBack size="24px" color="gray" />
+                        </Box>
+                    )}
 
-                    {/* <label For="">Sort by Price</label> */}
-                    <select style={{ border: "1px solid gray", width: "200px", borderRadius: "5px", padding: "5px", fontSize: "small" }} onChange={handleSortChange} value={sortOrder} placeholder="Sort by Price">
+                    <Box overflow="hidden">
+                        <Flex
+                            ref={scrollRef}
+                            overflowX="hidden" // Hide horizontal scrolling
+                            whiteSpace="nowrap"
+                            p={2}
+                            pl={35}
+                            pr={35}
+                            gap={10}
+                            color="gray.500"
+                            flexDirection="row"
+                            height="50px"
+                            justifyContent={isMobile ? "flex-start" : "center"} // Center for large screens
+                            sx={{
+                                "::-webkit-scrollbar": { display: "none" }, // Hide scrollbar for WebKit browsers
+                                scrollbarWidth: "none", // Hide scrollbar for Firefox
+                            }}
+                        >
+                            {[
+                                { path: "/category/rooms", icon: <LuBedDouble size="20px" />, label: "Rooms" },
+                                { path: "/category/lakefront", icon: <FaWater size="20px" />, label: "Lakefront" },
+                                { path: "/category/amazingview", icon: <GiWindow size="20px" />, label: "Amazing View" },
+                                { path: "/category/beachfront", icon: <TbBeach size="20px" />, label: "Beachfront" },
+                                { path: "/category/treehouses", icon: <GiTreehouse size="20px" />, label: "Treehouses" },
+                                { path: "/category/luxe", icon: <MdOutlineEmojiFoodBeverage size="20px" />, label: "Luxe" },
+                                { path: "/category/poolSideProperty", icon: <FaSwimmingPool size="20px" />, label: "Amazing Pools" },
+                                { path: "/category/farms", icon: <PiFarm size="20px" />, label: "Farms" },
+                            ].map(({ path, icon, label }) => (
+                                <Link to={path} key={path}>
+                                    <Flex direction="column" align="center" justify="center" _hover={{ color: "black", borderBottom: "2px solid black" }}>
+                                        {icon}
+                                        <Text fontSize="xs">{label}</Text>
+                                    </Flex>
+                                </Link>
+                            ))}
+                        </Flex>
+                    </Box>
+
+                    {/* Show scroll buttons ONLY on mobile */}
+                    {isMobile && (
+                        <Box
+                            position="absolute"
+                            right="0px"
+                            top="50%"
+                            transform="translateY(-50%)"
+                            zIndex="10"
+                            cursor="pointer"
+                            onClick={() => scroll("right")}
+                            border={"1px solid"}
+                            borderRadius={"50%"}
+                            p={1}
+                            color="gray"
+                        >
+                            <IoIosArrowForward size="24px" color="gray" />
+                        </Box>
+                        
+                    )}
+                </Box>
+
+                {/* Sort Dropdown Section - Aligned in the same row */}
+                <Box ml="20px">
+                    <select
+                        style={{
+                            border: "1px solid gray",
+                            width: "200px",
+                            borderRadius: "5px",
+                            padding: "5px",
+                            fontSize: "small",
+                        }}
+                        onChange={handleSortChange}
+                        value={sortOrder}
+                    >
                         <option value="">Sort by Price</option>
-                        <option value="low-to-high"> <GoSortAsc /> Low to High</option>
-                        <option value="high-to-low"> <GoSortDesc />High to Low</option>
+                        <option value="low-to-high"> Low to High</option>
+                        <option value="high-to-low"> High to Low</option>
                     </select>
-                </Flex>
-            </Box>
+                </Box>
+            </Flex>
+
+
+
 
 
             {mergedProperties.length > 0 ? (
@@ -422,10 +455,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
-
-
-
-
-

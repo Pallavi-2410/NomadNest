@@ -9,12 +9,12 @@ import sofa from "../assets/3pics/sofa.png"
 const Host = () => {
 
     return (
-        <Flex p={5} maxW="100%" mx="auto" minHeight="80vh" justifyContent={"space-evenly"} alignItems={'center'} borderRadius={10}>
-            <Heading fontSize={"30px"} maxW={"40%"} lineHeight={"2"}>It's easy to get started on Nomad Nest.
+        <Flex flexDirection={{ base: "column", md: "row" }} p={5} maxW="100%" mx="auto" minHeight="80vh" justifyContent={"space-evenly"} alignItems={'center'} borderRadius={10}>
+            <Heading fontSize={"30px"} maxW={{base:"80%",md:"40%"}} lineHeight={"2"}>It's easy to get started on Nomad Nest.
                 Let's start nesting...
             </Heading>
 
-            <VStack align={"start"} maxW={"40%"}>
+            <VStack align={"start"} maxW={{base:"80%",md:"40%"}}>
                 <HStack>
                     <Box>
                         <Heading>Tell us about your place</Heading>

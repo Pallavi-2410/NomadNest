@@ -87,9 +87,9 @@ const PaymentPage = () => {
                 <Heading ml={3} fontSize={"3xl"}>Confirm and Pay</Heading>
             </Flex>
 
-            <Flex justifyContent="space-between" >
+            <Flex flexDirection={{ base: "column-reverse", md: "row" }} justifyContent="space-between" >
                 
-                <Box flex="1" maxW={"50%"}>
+                <Box flex="1" maxW={{base:"100%", md:"50%" }}>
                     <HStack border={"1px solid"} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} >                        
                             <Box>
                                 <Heading mb={2}>This is a rare find.</Heading>
@@ -283,7 +283,7 @@ const PaymentPage = () => {
                     <Text pt={6} pb={6} fontSize={"xs"}>By selecting the button below, I agree to the Host's House Rules, Ground rules for guests, Airbnb's Rebooking and Refund Policy and that Airbnb can charge my payment method if I’m responsible for damage.</Text>
 
                     <Button
-                        width="50%"
+                        width={{base:"100%", md:"50%"}}
                         height={"60px"}
                         fontSize={"xl"}
                         bg="#F44336"
@@ -297,13 +297,12 @@ const PaymentPage = () => {
 
 
 
-                {/* Right Section - Property details & Price details */}
-                <Box flex="1" border={"1px solid"} maxW={"40%"} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} maxH={"-webkit-fit-content"} >
+                {/* Right Section */}
+                <Box mb={10} flex="1" border={"1px solid"}  maxW={{base:"100%", md:"40%"}} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} maxH={"-webkit-fit-content"} >
                     {/* Property Image */}
-                    <HStack>
+                    <HStack flexDirection={{ base: "column", md: "row" }}>
                     <Image mb={5} src={propertyImage} alt={propertyTitle} boxSize={"200px"} borderRadius="10px" />
-
-                    {/* Property Title & Description */}
+                    
                     <Box>
                         <Text fontSize="lg" fontWeight="bold">{propertyTitle}</Text>
                         <Text fontSize="sm" color="gray.500" mb={2}>{propertyDescription}</Text>

@@ -94,7 +94,7 @@ const AddProperty = () => {
 
 
     return (
-        <Box p={5} maxW="80%" mx="auto">
+        <Box p={5} maxW={{base:"100%", md: "80%"}} mx="auto">
             <Heading size="lg" mb={6} textAlign="center">List a New Property</Heading>
             <VStack as="form" onSubmit={handleSubmit} spacing={4} margin={"auto"} p={5} boxShadow="md" borderRadius="md" maxW={"60%"}>
 

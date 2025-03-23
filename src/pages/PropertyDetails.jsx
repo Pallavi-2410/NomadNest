@@ -81,6 +81,9 @@ const PropertyDetails = () => {
 
 
   console.log("property", property)
+
+
+
   return (
     <Box p={5} maxW="76%" mx="auto">
       
@@ -98,18 +101,20 @@ const PropertyDetails = () => {
       <Text fontSize={"m"} fontWeight={"bold"} m={3}>Hosted by {auth.currentUser?.displayName ? auth.currentUser.displayName : "No user"}</Text>
     </Box>
 
-    <Flex maxW={"100%"} justifyContent={"center"}>
+      <Flex flexDirection={{base:"column-reverse", md:"row"}}  maxW={"100%"} justifyContent={"center"}>
       <Box>
-        <HStack border={"1px solid"} borderColor={"gray.300"} p={6} borderRadius={10} width={"85%"} justifyContent={"space-evenly"}>
+        <HStack border={"1px solid"} borderColor={"gray.300"} p={6} mt={{base:"30px", md:"0px"}} borderRadius={10} width={{base:"100%",md:"85%"}} justifyContent={"space-evenly"}>
+
             <Text fontWeight="bold" fontSize="large" display="flex" alignItems="center" gap={2}>
               <img src={oliveleft} alt="oliveleft" style={{ width: "25px"}} />
               Guest favourite
               <img src={oliveright} alt="oliveRight" style={{ width: "25px"}} />
             </Text>
-            <Box height="30px" width="1px" bg="gray.300" mx={3} />
-          <Text>4.9 </Text>
-            <Box height="30px" width="1px" bg="gray.300" mx={3} />
-            <Text>30 <span style={{fontSize:"12px"}}>Reviews</span></Text>
+            
+            <Box display={{ base: "none", md: "block" }} height="30px" width="1px" bg="gray.300" mx={3} />
+            <Text display={{ base: "none", md: "block" }}>4.9 </Text>
+            <Box display={{ base: "none", md: "block" }} height="30px" width="1px" bg="gray.300" mx={3} />
+            <Text display={{ base: "none", md: "block" }}>30 <span style={{fontSize:"12px"}}>Reviews</span></Text>
         </HStack>
           <hr style={{ marginTop: "30px", marginBottom: "30px", width:"85%" }}/>
 
@@ -158,17 +163,17 @@ const PropertyDetails = () => {
 
 
 {/* Card */}
-    <Box maxW={"40%"} p={5} mt={6} boxShadow="md" borderRadius={8} m={"auto"}>
+        <Box w={{base:"100%", md:"40%"}}  p={5} mt={6} boxShadow="md" borderRadius={8} m={"auto"}>
       <Flex justify="space-between" align="center">
         <Text fontSize="2xl" fontWeight="bold">
           ₹{property.price} <span style={{ fontSize: "18px", fontWeight: "normal" }}>night</span>
         </Text>
       </Flex>
 
-      <Box mt={3} p={3} border="1px solid gray" borderRadius={8}>
+      <Box mt={3} p={3} border="1px solid" borderColor={"gray.300"} borderRadius={8}>
 
-        <Flex justify="space-between" align="center">
-          <Box>
+        <Flex justify="space-between" align="center" flexDirection={{base:"column", md:"row"}}>
+          <Box mb={{base:"10px", md: "0px"}}>
             <Text fontSize="xs" fontWeight="bold">CHECK-IN</Text>
             <input
               type="date"
@@ -184,7 +189,7 @@ const PropertyDetails = () => {
             />
           </Box>
 
-          <Box height="40px" width="1px" bg="gray.300" mx={3} />
+          <Box height="60px" width="1px" bg="gray.300" mx={3} display={{base:"none", md:"block"}} />
 
           <Box>
             <Text fontSize="xs" fontWeight="bold">CHECKOUT</Text>
@@ -255,12 +260,12 @@ const PropertyDetails = () => {
       {/* Price Breakdown */}
       {nights > 0 && (
         <>
-          <Flex justify="space-between" mt={3}>
+          <Flex justify="space-between" mt={3} fontSize={{base: "15px", md:"medium"}}>
             <Text>₹{property.price} x {nights} nights</Text>
             <Text fontWeight="bold">₹{totalPrice}</Text>
           </Flex>
 
-          <Flex justify="space-between" mt={2}>
+              <Flex justify="space-between" mt={2} fontSize={{ base: "15px", md: "medium" }}>
             <Text>NomadNest Service Fee</Text>
             <Text fontWeight="bold">₹{serviceFee}</Text>
           </Flex>
