@@ -1,12 +1,75 @@
-# React + Vite
+# NomadNest
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+NomadNest is a platform designed to redefine travel experiences, offering travelers a seamless way to find and book unique accommodations worldwide. Inspired by the spirit of adventure and the comfort of home, NomadNest bridges the gap between wanderlust and luxury, providing handpicked stays tailored to every traveler’s needs.
 
-Currently, two official plugins are available:
+## 🌍 Welcome to NomadNest
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+NomadNest is your gateway to extraordinary stays across the world. Whether you're looking for cozy cabins, beachfront villas, or city apartments, we bring you a carefully curated selection of accommodations that promise comfort and authenticity. With easy navigation, secure booking options, and a variety of categories, finding your next perfect stay has never been easier!
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 💻 Tech Stack:
+- HTML
+- CSS
+- JavaScript
+- React
+- Redux
+- Chakra UI
+- Firebase
+
+---
+
+## 🌐 Socials:
+Pallavi Patidar - https://www.linkedin.com/in/pallavi-patidar-8466a7273/
+
+---
+
+## 🚀 Project Type
+**Frontend | Backend | Fullstack**
+
+---
+
+## 🔗 Deployed App
+**Frontend:** https://nomad-nest-firebase.web.app
+
+
+---
+
+## ✨ Features
+✅ **Diverse Property Listings:** Browse various property types, including beach houses, treehouses, farms, and luxury stays.
+✅ **Intuitive Navigation:** Simple and efficient category-based filtering for easy exploration.
+✅ **User Authentication:** Secure login and signup using Firebase authentication.
+✅ **Dynamic Property Details Page:** View high-quality images, descriptions, pricing, and location details.
+✅ **Search & Filter Functionality:** Sort properties by price, location, or category.
+✅ **Responsive Design:** Optimized for mobile and desktop users.
+
+---
+
+## 📸 Screenshots
+### 🏠 Home Page
+![Home Page](assets/screenshots/SS1.png)
+
+### 🏡 Property Details
+![Property Details](assets/screenshots/SS2.png)
+
+### 🛒 Checkout Page
+![Checkout Page](assets/screenshots/SS3.png)
+
+### 🏕️ Add Property
+![Add Property](assets/screenshots/SS4.png)
+
+---
+
+## 🛠️ Technology Stack
+- **React.js**: For building a dynamic user interface.
+- **Redux**: For efficient state management.
+- **Chakra UI**: For seamless and responsive styling.
+- **Firebase**: For user authentication and database management.
+- **HTML & CSS**: For structuring and styling web pages.
+- **JavaScript**: For adding interactivity and dynamic behavior.
+
+---
+
+## 🙌 Thank You!
+Thank you for exploring **NomadNest**. We hope you enjoy using the platform as much as we enjoyed building it. Happy traveling! ✈️🌍
+
