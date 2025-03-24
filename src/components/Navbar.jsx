@@ -97,21 +97,21 @@ const Navbar = () => {
                     <VStack align="start" spacing={3}>
                         {!user ? (
                             <>
-                                <Button width="100%" onClick={() => navigate("/login")}>Login</Button>
-                                <Button width="100%" onClick={() => handleGoogleSignIn(navigate)}>Sign in with Google</Button>
+                                <Button color="gray.500" width="100%" onClick={() => navigate("/login")}>Login</Button>
+                                <Button color="gray.500" width="100%" onClick={() => handleGoogleSignIn(navigate)}>Sign in with Google</Button>
                             </>
                         ) : (
                             <>
                                 <Link to="/host" >
-                                        <Button w={"169px"} bg="transparent" color="black">Add Property</Button>
+                                        <Button w={"169px"} bg="transparent" color="gray.500">Add Property</Button>
                                 </Link>
                                 <Flex fontSize="sm" borderRadius={8} p="9px" mt={3} mb={3} w={"100%"} border="1px solid" borderColor="gray.200"
                                     _hover={{ boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px" }} fontWeight="medium"
                                     align="center" gap={2} justifyContent={"center"}>
-                                    <FaRegUser />
-                                    <Text>{user?.displayName}</Text>
+                                        <FaRegUser color="gray.500" />
+                                        <Text color="gray.500">{user?.displayName}</Text>
                                 </Flex>
-                                <Button width="100%" onClick={handleSignOut} bg="transparent" color="black">Sign Out</Button>
+                                    <Button width="100%" onClick={handleSignOut} bg="transparent" color="gray.500">Sign Out</Button>
                             </>
                         )}
                     </VStack>

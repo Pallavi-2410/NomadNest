@@ -2,14 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { auth, db } from "../firebase/firebaseConfig";
 import { collection, getDocs } from "firebase/firestore";
-import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image, useBreakpointValue} from "@chakra-ui/react";
+import { Box, Button, Text, Flex, Heading, SimpleGrid, Input, Image, useBreakpointValue } from "@chakra-ui/react";
 import { LuSearch, LuBedDouble } from "react-icons/lu";
 import { FaSwimmingPool, FaWater } from "react-icons/fa";
 import { GiWindow, GiTreehouse } from "react-icons/gi";
 import { TbBeach } from "react-icons/tb";
 import { MdOutlineEmojiFoodBeverage } from "react-icons/md";
 import { PiFarm } from "react-icons/pi";
-import { GoSortAsc, GoSortDesc } from "react-icons/go";
 import { useParams } from "react-router-dom";
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
@@ -30,10 +29,14 @@ const Dashboard = () => {
     const scrollRef = useRef(null);
     const isMobile = useBreakpointValue({ base: true, md: false });
 
+    
+
     // const navigate = useNavigate();
 
     const { category } = useParams();
+    console.log("Selected Category:", category);
 
+    // return <div>{category} Properties</div>;
 
     const filterByCategory = (properties, category) => {
         if (!category) return properties;
@@ -69,7 +72,7 @@ const Dashboard = () => {
                 setProperties(propertyList);
             } catch (error) {
                 console.error("Error fetching properties:", error);
-            }
+            }            
         };
 
         fetchProperties();
@@ -128,6 +131,7 @@ const Dashboard = () => {
             alert("No property available.");
         }
         // till here
+
         console.log("Filtered Properties: ", searchResults);
 
         setFilteredProperties(searchResults.length > 0 ? searchResults : properties);
@@ -139,6 +143,7 @@ const Dashboard = () => {
             setFilteredProperties(properties);
             return;
         }
+        setIsOpen(false)
     };
 
     const formatDateRange = (checkIn, checkOut) => {
@@ -155,7 +160,7 @@ const Dashboard = () => {
 
     const scroll = (direction) => {
         if (scrollRef.current) {
-            const scrollAmount = 250; // Scroll amount
+            const scrollAmount = 150;
             scrollRef.current.scrollBy({
                 left: direction === "left" ? -scrollAmount : scrollAmount,
                 behavior: "smooth",
@@ -163,26 +168,28 @@ const Dashboard = () => {
         }
     };
 
+
     return (
         <Box p={5} maxW="80%" mx="auto" >
 
             {/* SearchBar */}
-            <Flex
+            <Flex                
                 display={{ base: "flex", md: "none" }}
                 align="center"
                 justify="center"
                 p={3}
-                bg="gray.100"
+                bg="white"
                 borderRadius="50px"
                 cursor="pointer"
                 onClick={() => setIsOpen(true)}
                 mb={6}
             >
                 <LuSearch />
-                <Text ml={2}>Start your search</Text>
+                <Text color={"gray.500"} ml={2}>Start your search</Text>
             </Flex>
 
-            <Flex gap={15}
+            <Flex 
+                gap={15}
                 display={{ base: "none", md: "flex" }}
                 mb={6}
                 p={3}
@@ -282,27 +289,27 @@ const Dashboard = () => {
                     zIndex="1000"
                     mb={6}
                     p={3}
+                    onClick={() => setIsOpen(false)}
                 >
-                    <Box bg="white" p={6} borderRadius="10px" width="90%" maxWidth="400px">
+                    <Box bg="white" p={6} borderRadius="10px" width="90%" maxWidth="400px" onClick={(e) => e.stopPropagation()}>
                         <Text fontSize="lg" fontWeight="bold">Search</Text>
 
                         <Text fontSize={"sm"} mt={3} ml={2} >Where</Text>
                         <Input placeholder="Search destination" value={destination} onChange={(e) => setDestination(e.target.value)} m={1} />
 
                         <Text fontSize={"sm"} mt={3} ml={2}>Check-In</Text>
-                        <Input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} m={1} />
+                        <Input color={"gray"} type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} m={1} />
 
                         <Text fontSize={"sm"} mt={3} ml={2}>Check-Out</Text>
-                        <Input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} m={1} />
+                        <Input color={"gray"} type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} m={1} />
 
                         <Text fontSize="smaller" mt={3} ml={2}>Adults</Text>
-                        <Input type="number" placeholder="Adults" value={adults} min="1" onChange={(e) => setAdults(Number(e.target.value))} m={1} />
+                        <Input color={"gray"} type="number" placeholder="Adults" value={adults} min="1" onChange={(e) => setAdults(Number(e.target.value))} m={1} />
 
                         <Text fontSize="smaller" mt={3} ml={2}>Children</Text>
-                        <Input type="number" placeholder="Children" value={children} min="0" onChange={(e) => setChildren(Number(e.target.value))} m={1} />
+                        <Input color={"gray"} type="number" placeholder="Children" value={children} min="0" onChange={(e) => setChildren(Number(e.target.value))} m={1} />
 
-                        <Flex mt={4} justify="space-between">
-                            <Button onClick={() => setIsOpen(false)}>Close</Button>
+                        <Flex mt={4} justify="center">
                             <Button bg="#F44336" color="white" onClick={handleSearch}>Search</Button>
                         </Flex>
                     </Box>
@@ -318,13 +325,13 @@ const Dashboard = () => {
             {/* <Box>
                 <Flex gap={10} color="gray.500" flexDirection="row" m="20px 0px 20px 40px"
                     height={"40px"} justifyContent={"center"}> */}
-                    
+
 
             <Flex flexDirection={{ base: "column", md: "row" }} alignItems={{ base: "center", md: "center" }} m="20px" justifyContent="space-between" gap={{ base: 2, md: 5 }} >
-                <Box position="relative" maxW="100%" overflow="hidden" flex="1" pb={{base:"8px", md: "0px"}}>
+                <Box position="relative" maxW="100%" overflow="hidden" flex="1" pb={{ base: "8px", md: "0px" }}>
                     {/* Show scroll buttons ONLY on mobile */}
                     {isMobile && (
-                        <Box
+                        <Box                            
                             position="absolute"
                             left="0px"
                             top="50%"
@@ -344,7 +351,7 @@ const Dashboard = () => {
                     <Box overflow="hidden">
                         <Flex
                             ref={scrollRef}
-                            overflowX="hidden" // Hide horizontal scrolling
+                            overflowX="hidden"
                             whiteSpace="nowrap"
                             p={2}
                             pl={35}
@@ -353,21 +360,21 @@ const Dashboard = () => {
                             color="gray.500"
                             flexDirection="row"
                             height="50px"
-                            justifyContent={isMobile ? "flex-start" : "center"} // Center for large screens
+                            justifyContent={isMobile ? "flex-start" : "center"} 
                             sx={{
-                                "::-webkit-scrollbar": { display: "none" }, // Hide scrollbar for WebKit browsers
-                                scrollbarWidth: "none", // Hide scrollbar for Firefox
+                                "::-webkit-scrollbar": { display: "none" },
+                                scrollbarWidth: "none", 
                             }}
                         >
                             {[
-                                { path: "/category/rooms", icon: <LuBedDouble size="20px" />, label: "Rooms" },
-                                { path: "/category/lakefront", icon: <FaWater size="20px" />, label: "Lakefront" },
-                                { path: "/category/amazingview", icon: <GiWindow size="20px" />, label: "Amazing View" },
-                                { path: "/category/beachfront", icon: <TbBeach size="20px" />, label: "Beachfront" },
-                                { path: "/category/treehouses", icon: <GiTreehouse size="20px" />, label: "Treehouses" },
-                                { path: "/category/luxe", icon: <MdOutlineEmojiFoodBeverage size="20px" />, label: "Luxe" },
-                                { path: "/category/poolSideProperty", icon: <FaSwimmingPool size="20px" />, label: "Amazing Pools" },
-                                { path: "/category/farms", icon: <PiFarm size="20px" />, label: "Farms" },
+                                { path: "/category/Rooms", icon: <LuBedDouble size="20px" />, label: "Rooms" },
+                                { path: "/category/Lakefront", icon: <FaWater size="20px" />, label: "Lakefront" },
+                                { path: "/category/Amazing View", icon: <GiWindow size="20px" />, label: "Amazing View" },
+                                { path: "/category/Beachfront", icon: <TbBeach size="20px" />, label: "Beachfront" },
+                                { path: "/category/Treehouses", icon: <GiTreehouse size="20px" />, label: "Treehouses" },
+                                { path: "/category/Luxe", icon: <MdOutlineEmojiFoodBeverage size="20px" />, label: "Luxe" },
+                                { path: "/category/Amazing Pools", icon: <FaSwimmingPool size="20px" />, label: "Amazing pools" },
+                                { path: "/category/Farms", icon: <PiFarm size="20px" />, label: "Farms" },
                             ].map(({ path, icon, label }) => (
                                 <Link to={path} key={path}>
                                     <Flex direction="column" align="center" justify="center" _hover={{ color: "black", borderBottom: "2px solid black" }}>
@@ -396,7 +403,7 @@ const Dashboard = () => {
                         >
                             <IoIosArrowForward size="24px" color="gray" />
                         </Box>
-                        
+
                     )}
                 </Box>
 

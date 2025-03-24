@@ -90,7 +90,7 @@ const PropertyDetails = () => {
     <Box>
       <Heading textAlign={"center"} size="lg" mb={4}>{property.title}</Heading>
 
-        <Image mb={5} src={property.imageUrl} alt={property.title} boxSize={"600px"} mx={"auto"} borderRadius="10px"  />
+        <Image mb={5} src={property.imageUrl} alt={property.title} boxSize={{ base: "300px",md: "600px"}} mx={"auto"} borderRadius="10px"  />
 
       <Text fontSize="lg" m={3}>{property.description}</Text>
         <Text fontSize="md" m={3}>Adults - {property.adults}, Children - {property.children}</Text>

@@ -69,11 +69,17 @@ const SearchBar = () => {
                 >
                     <Box bg="white" p={6} borderRadius="10px" width="90%" maxWidth="400px">
                         <Text fontSize="lg" fontWeight="bold">Search</Text>
-                        <Input placeholder="Search destination" value={destination} onChange={(e) => setDestination(e.target.value)} mt={3} />
+
+                        <Input placeholder="Search destination" value={destination} onChange={(e) => setDestination(e.target.value)} mt={3}  />
+
                         <Input type="date" value={checkInDate} onChange={(e) => setCheckInDate(e.target.value)} mt={3} />
+
                         <Input type="date" value={checkOutDate} onChange={(e) => setCheckOutDate(e.target.value)} mt={3} />
+
                         <Input type="number" placeholder="Adults" value={adults} min="1" onChange={(e) => setAdults(Number(e.target.value))} mt={3} />
+
                         <Input type="number" placeholder="Children" value={children} min="0" onChange={(e) => setChildren(Number(e.target.value))} mt={3} />
+
                         <Flex mt={4} justify="space-between">
                             <Button onClick={() => setIsOpen(false)}>Close</Button>
                             <Button bg="#F44336" color="white" onClick={handleSearch}>Search</Button>

@@ -18,6 +18,7 @@ const AddProperty = () => {
     const [checkOut, setCheckOut] = useState("");
     const [adults, setAdults] = useState(1);
     const [children, setChildren] = useState(0);
+    const [uploadMessage, setUploadMessage] = useState("");
     const navigate = useNavigate();
 
     console.log(properties, "properties")
@@ -53,6 +54,7 @@ const AddProperty = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
+        setUploadMessage("Uploading property...Please wait.")
         try {
             const fileInput = e.target.querySelector('input[type="file"]');
             const file = fileInput.files[0];
@@ -72,10 +74,12 @@ const AddProperty = () => {
                 createdAt: serverTimestamp(),
             });
 
-            alert("Property added successfully!");
+            setUploadMessage("Property added successfully!");
+            setTimeout(()=> setUploadMessage(""),3000);
             navigate("/");
         } catch (error) {
             console.error("Error adding property:", error);
+            setUploadMessage("Failed to upload property. Please try again.")
         } finally {
             setLoading(false);
         }
@@ -175,12 +179,32 @@ const AddProperty = () => {
                 </Box>
 
                 <Box w="full" mb={2}>
-                    <Text mb={1}>Upload Property Image</Text>
+                    <Text mb={1}>
+                        Upload Property Image
+                        <Text as="span" fontSize="12px" color="gray.500"> (jpg or jpeg)</Text>
+                    </Text>
                     <Input p={1.5} type="file" accept="image/*" required />
-                    {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />}
+                    {/* {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />} */}
                 </Box>
 
-                <Button type="submit" color={"white"} bgColor={"#F44336"} borderRadius={8} isLoading={loading} w="full">Submit</Button>
+                {uploadMessage && (
+                    <Text color={loading ? "orange.500" : "green.500"} fontWeight="bold">
+                        {uploadMessage}
+                    </Text>
+                )}
+                <Button
+                    type="submit"
+                    color="white"
+                    bgColor="#F44336"
+                    borderRadius={8}
+                    isLoading={loading}
+                    isDisabled={loading}
+                    w="full"
+                >
+                    {loading ? "Uploading..." : "Submit"}
+                </Button>
+
+                {/* <Button type="submit" color={"white"} bgColor={"#F44336"} borderRadius={8} isLoading={loading} w="full">Submit</Button> */}
             </VStack>
 
             <Heading size="lg" mt={10} mb={4} textAlign="left">All Properties</Heading>

@@ -8,7 +8,20 @@ const FooterBottom = () => {
         <Box as="footer" mt="auto" width="100%">
             <hr />
             <HStack flexDirection={{ base: "column", md: "row" }} justifyContent="space-between" p={4} fontSize="small" pr={{base: 0,md:12}} pl={{base:0,md:12}}>
-                <Text>© 2025 NomadNest, Inc. · Privacy · Terms · Sitemap · Company details</Text>
+                <HStack flexWrap="wrap"
+                    spacing={4}
+                    sx={{
+                        "@media (max-width: 768px)": {
+                            display: "grid",
+                            gridTemplateColumns: "repeat(2, 1fr)"
+                        }
+                    }} >
+                <Text>© 2025 NomadNest, Inc.</Text>
+                <Text>· Privacy</Text>
+                <Text>· Terms</Text>
+                <Text>· Sitemap</Text>
+                <Text>· Company details</Text>
+                </HStack>
                 <HStack gap={5}>
                     <Text>English (IN)</Text>
                     <Text>₹ INR</Text>
