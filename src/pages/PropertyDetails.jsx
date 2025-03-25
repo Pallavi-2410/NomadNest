@@ -13,7 +13,7 @@ import oliveleft from "../assets/HostImages/olive-left.png"
 
 
 const PropertyDetails = () => {
-  const { id } = useParams();
+  const { id, propertyId } = useParams();
   const [user, setUser] = useState("");
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -21,8 +21,11 @@ const PropertyDetails = () => {
   const [checkOut, setCheckOut] = useState("");
   const [guest, setGuest] = useState(1);
   const [nights, setNights] = useState(0);
+  const [hostName, setHostName] = useState("");
 
   const navigate = useNavigate();
+
+  console.log("Property ID from URL:", propertyId);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -32,17 +35,42 @@ const PropertyDetails = () => {
   }, []);
 
   useEffect(() => {
+    if (!propertyId) return;  // Ensure propertyId exists
+
     const fetchProperty = async () => {
       try {
-        const docRef = doc(db, "properties", id);
+        const docRef = doc(db, "properties", propertyId);
         const docSnap = await getDoc(docRef);
+
         if (docSnap.exists()) {
           const propertyData = docSnap.data();
           setProperty({ id: docSnap.id, ...propertyData });
           setCheckIn(propertyData.checkIn || "");
           setCheckOut(propertyData.checkOut || "");
+
+          // Debugging Logs
+          console.log("Property Data:", propertyData);
+          console.log("User ID:", propertyData.userId);
+          console.log("Host Name:", propertyData.hostName || "Unknown Host");
+
+          // Fetch user data if userId exists
+          if (propertyData.userId) {
+            const userRef = doc(db, "users", propertyData.userId);
+            const userSnap = await getDoc(userRef);
+
+            if (userSnap.exists()) {
+              console.log("User Data:", userSnap.data()); // Debugging log
+              setHostName(userSnap.data().name || "Unknown Host");
+            } else {
+              console.warn("No such user found in Firestore!");
+              setHostName("Unknown Host");
+            }
+          } else {
+            console.warn("Property has no userId field!");
+            setHostName("Unknown Host");
+          }
         } else {
-          console.log("No such property!");
+          console.warn("No such property!");
         }
       } catch (error) {
         console.error("Error fetching property details:", error);
@@ -50,8 +78,26 @@ const PropertyDetails = () => {
         setLoading(false);
       }
     };
+
     fetchProperty();
-  }, [id]);
+  }, [propertyId]);
+
+  
+
+  // const fetchHostName = async (userId) => {
+  //   try {
+  //     const userRef = doc(db, "users", userId);
+  //     const userSnap = await getDoc(userRef);
+  //     if (userSnap.exists()) {
+  //       setHostName(userSnap.data().displayName || "Unknown Host");
+  //     } else {
+  //       setHostName("Unknown Host");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching host details:", error);
+  //     setHostName("Unknown Host");
+  //   }
+  // };
 
   useEffect(() => {
     if (checkIn && checkOut) {
@@ -98,7 +144,7 @@ const PropertyDetails = () => {
 
       <hr style={{ marginTop: "30px", marginBottom: "30px", }} />
 
-      <Text fontSize={"m"} fontWeight={"bold"} m={3}>Hosted by {auth.currentUser?.displayName ? auth.currentUser.displayName : "No user"}</Text>
+      <Text fontSize={"md"} fontWeight={"bold"} m={3}>Hosted by {property.hostName}</Text>
     </Box>
 
       <Flex flexDirection={{base:"column-reverse", md:"row"}}  maxW={"100%"} justifyContent={"center"}>

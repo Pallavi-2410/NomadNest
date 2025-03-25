@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../firebase/firebaseConfig";
+import { db , auth} from "../firebase/firebaseConfig";
 import { collection, addDoc, serverTimestamp, getDocs } from "firebase/firestore";
 import { Box, Button, Input, Textarea, VStack, Heading, Image, SimpleGrid, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
@@ -56,6 +56,14 @@ const AddProperty = () => {
         setLoading(true);
         setUploadMessage("Uploading property...Please wait.")
         try {
+            const user = auth.currentUser;
+            if (!user) {
+                setUploadMessage("User not logged in");
+                return;
+            }
+            const userId = user.uid;
+
+
             const fileInput = e.target.querySelector('input[type="file"]');
             const file = fileInput.files[0];
             const uploadedImageUrl = await uploadImageToImgur(file);
@@ -72,6 +80,8 @@ const AddProperty = () => {
                 children,
                 imageUrl: uploadedImageUrl,
                 createdAt: serverTimestamp(),
+                userId: user.uid,
+                hostName: user.displayName || "Unknown Host",
             });
 
             setUploadMessage("Property added successfully!");
@@ -100,7 +110,7 @@ const AddProperty = () => {
     return (
         <Box p={5} maxW={{base:"100%", md: "80%"}} mx="auto">
             <Heading size="lg" mb={6} textAlign="center">List a New Property</Heading>
-            <VStack as="form" onSubmit={handleSubmit} spacing={4} margin={"auto"} p={5} boxShadow="md" borderRadius="md" maxW={"60%"}>
+            <VStack as="form" onSubmit={handleSubmit} spacing={4} margin={"auto"} p={5} boxShadow="md" borderRadius="md" maxW={{base:"100%", md: "80%"}}>
 
                 <Box w="full" mb={2}>
                     <Text mb={1}>Property Title</Text>
@@ -181,7 +191,7 @@ const AddProperty = () => {
                 <Box w="full" mb={2}>
                     <Text mb={1}>
                         Upload Property Image
-                        <Text as="span" fontSize="12px" color="gray.500"> (jpg or jpeg)</Text>
+                        <Text as="span" fontSize="12px" color="gray.500"> (jpg / jpeg / png)</Text>
                     </Text>
                     <Input p={1.5} type="file" accept="image/*" required />
                     {/* {imageUrl && <Image src={imageUrl} alt="Uploaded" boxSize="150px" mt={2} />} */}

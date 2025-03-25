@@ -31,7 +31,7 @@ const Signup = () => {
 
     return (
         <Flex minHeight="80vh" flexDirection="column">
-        <Box maxW={"500px"} mx={"auto"} mt={"100px"} p={5} border={"1px solid"} borderColor={"gray.300"} borderRadius={8}>
+            <Box maxW={{ base: "90%", md: "50%" }} mx={"auto"} mt={"100px"} p={5} border={"1px solid"} borderColor={"gray.300"} borderRadius={8}>
             <Heading>Sign Up</Heading>
             {error && <Text>{error}</Text>}
             <Input placeholder='Enter name' mb={3} value={fullName} onChange={(e) =>setFullname(e.target.value)}/>

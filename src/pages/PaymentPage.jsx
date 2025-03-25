@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Box, Flex, Text, Button, Image, Heading, Input, HStack, List, ListItem } from "@chakra-ui/react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Box, Flex, Text, Button, Image, Heading, Input, HStack } from "@chakra-ui/react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { format, differenceInDays } from "date-fns";
 import QRCode from "../assets/QR-Code.png";
 import { IoIosArrowBack } from "react-icons/io";
-import { auth } from "../firebase/firebaseConfig";
+import { auth, db } from "../firebase/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 import { SlDiamond } from "react-icons/sl";
 
 const PaymentPage = () => {
@@ -53,6 +54,7 @@ const PaymentPage = () => {
     const totalPrice = updatedNights * pricePerNight;
     const serviceFee = 5000;
     const grandTotal = totalPrice + serviceFee;
+    const [hostName, setHostName] = useState("");
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged((currentUser) => {
@@ -79,8 +81,30 @@ const PaymentPage = () => {
         alert(`Payment Successful using ${paymentInfo.method}.`);
     };
 
+    useEffect(() => {
+        const fetchHostName = async () => {
+            if (!propertyId) return; // Prevent fetching if propertyId is missing
+
+            try {
+                const propertyRef = doc(db, "properties", propertyId);
+                const propertySnap = await getDoc(propertyRef);
+
+                if (propertySnap.exists()) {
+                    setHostName(propertySnap.data().hostName || "Unknown Host");
+                    console.log("Host Name:", propertySnap.data().hostName);
+                } else {
+                    console.log("No such property found in Firestore!");
+                }
+            } catch (error) {
+                console.error("Error fetching host name:", error);
+            }
+        };
+
+        fetchHostName();
+    }, [propertyId]);
+
     return (
-        <Box  p={5} maxW="76%" mx="auto" >
+        <Box p={5} maxW={{ base: "90%", md: "80%" }} mx="auto" >
             <Flex align={"center"} mb={8} >                
                 <IoIosArrowBack cursor="pointer"
                     onClick={() => navigate(`/property/${propertyId}`)} size={"25px"}/>
@@ -93,7 +117,7 @@ const PaymentPage = () => {
                     <HStack border={"1px solid"} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} >                        
                             <Box>
                                 <Heading mb={2}>This is a rare find.</Heading>
-                                <Text>{user?.displayName}'s place is usually booked</Text>
+                            <Text>{hostName}'s place is usually booked</Text>
                             </Box>
                             <SlDiamond size={"30px"} color="#F44336" />                        
                     </HStack>
@@ -301,7 +325,7 @@ const PaymentPage = () => {
                 <Box mb={10} flex="1" border={"1px solid"}  maxW={{base:"100%", md:"40%"}} borderColor={"gray.300"} p={6} borderRadius={10} justifyContent={"space-evenly"} maxH={"-webkit-fit-content"} >
                     {/* Property Image */}
                     <HStack flexDirection={{ base: "column", md: "row" }}>
-                    <Image mb={5} src={propertyImage} alt={propertyTitle} boxSize={"200px"} borderRadius="10px" />
+                    <Image mb={5} src={propertyImage} alt={propertyTitle} boxSize={"250px"} borderRadius="10px" />
                     
                     <Box>
                         <Text fontSize="lg" fontWeight="bold">{propertyTitle}</Text>

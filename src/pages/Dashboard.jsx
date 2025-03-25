@@ -170,7 +170,7 @@ const Dashboard = () => {
 
 
     return (
-        <Box p={5} maxW="80%" mx="auto" >
+        <Box p={5} maxW={{base:"90%", md:"80%"}} mx="auto" >
 
             {/* SearchBar */}
             <Flex                

@@ -21,7 +21,7 @@ function App() {
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/property/:id" element={<PropertyDetails />} />
+        <Route path="/property/:propertyId" element={<PropertyDetails />} />
         <Route path="/host" element={ <Host/> }/>
         <Route path="/add-property" element={<PrivateRoute><AddProperty /></PrivateRoute>} />
         <Route path="/category/:category" element={<Dashboard />} />
