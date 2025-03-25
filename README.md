@@ -54,9 +54,10 @@ Pallavi Patidar - https://www.linkedin.com/in/pallavi-patidar-8466a7273/
 
 ### 🛒 Checkout Page
 ![Checkout Page](src/assets/screenshots/SS3.png)
+![Confirm and Pay](src/assets/screenshots/SS4.png)
 
 ### 🏕️ Add Property
-![Add Property](src/assets/screenshots/SS4.png)
+![Add Property](src/assets/screenshots/SS5.png)
 
 ---
 
