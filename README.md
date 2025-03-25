@@ -47,17 +47,17 @@ Pallavi Patidar - https://www.linkedin.com/in/pallavi-patidar-8466a7273/
 
 ## 📸 Screenshots
 ### 🏠 Home Page
-![Home Page](src/assets/screenshots/SS1.png)
+![Home Page](src/assets/screenshots/ScreeShot1.png)
 
 ### 🏡 Property Details
-![Property Details](src/assets/screenshots/SS2.png)
+![Property Details](src/assets/screenshots/ScreeShot2.png)
 
 ### 🛒 Checkout Page
-![Checkout Page](src/assets/screenshots/SS3.png)
-![Confirm and Pay](src/assets/screenshots/SS4.png)
+![Checkout Page](src/assets/screenshots/ScreeShot3.png)
+![Confirm and Pay](src/assets/screenshots/ScreeShot4.png)
 
 ### 🏕️ Add Property
-![Add Property](src/assets/screenshots/SS5.png)
+![Add Property](src/assets/screenshots/ScreeShot5.png)
 
 ---
 
